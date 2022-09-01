@@ -29,8 +29,29 @@
             overflow: auto;
             padding: 15px;
             }
-         </style>
-         {% include navigation.html %}
+         </style> <div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+		   <div class="navbar-header">
+			  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand" href="/">MVCGrid.Net</a>
+		   </div>
+		   <div class="navbar-collapse collapse">
+			{% include nav.html nav=site.page.nav %}
+			  <ul class="nav navbar-nav">
+				 <li><a href="/">Home</a></li>
+				 <li><a href="/gettingstarted">Getting Started</a></li>
+				 <li><a href="/demo">Demos</a></li>
+				 <li><a href="/documentation">Documentation</a></li>
+				 <li><a href="/download">Download</a></li>
+				 <li><a href="/support">Support</a></li>
+			  </ul>
+		   </div>
+		</div>
+		</div>
          <div class="container body-content">
             <h1>{{ page.title }}</h1>
 			<section>
