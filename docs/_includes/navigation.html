@@ -9,6 +9,14 @@
 		  <a class="navbar-brand" href="/">MVCGrid.Net</a>
 	   </div>
 	   <div class="navbar-collapse collapse">
+			<ul>
+			  {% for item in include.nav %}
+				<li><a href="{{ item.url }}">{{ item.title }}</a></li>
+				{% if item.subnav %}
+				  {% include nav.html nav=item.subnav %}
+				{% endif %}
+			  {% endfor %}
+			</ul>
 		  <ul class="nav navbar-nav">
 			 <li><a href="/">Home</a></li>
 			 <li><a href="/gettingstarted">Getting Started</a></li>

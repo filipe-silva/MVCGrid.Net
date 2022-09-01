@@ -1,0 +1,13 @@
+nav:
+  - title: Home
+    url: /
+  - title: Getting Started
+    url: gettingstarted.html
+  - title: Demos
+    url: demo.html
+  - title: Documentation
+    url: documentation.html
+  - title: Download
+    url: download.html
+  - title: Support
+    url: support.html
