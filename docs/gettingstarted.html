@@ -1,0 +1,148 @@
+---
+layout: default
+title: Getting Started - MVCGrid.Net
+---
+<h2>Prerequisites</h2>
+<ul>
+   <li>MVC 3 or greater</li>
+   <li>jQuery</li>
+   <li>Bootstrap 3 (Or you can create your own custom style.)</li>
+</ul>
+<h2>Installation</h2>
+<h3>Using NuGet Package</h3>
+<ol>
+   <li>
+	  Install the NuGet Package
+	  <div class="nuget-badge">
+		 <p>
+			<code>
+			PM&gt; Install-Package MVCGrid.Net
+			</code>
+		 </p>
+	  </div>
+   </li>
+   <li>
+	  Add the javascript reference to your _Layout page after jquery is referenced:
+	  <pre>&lt;!-- Be sure this is after jquery reference --&gt;
+&lt;script src="~/MVCGridHandler.axd/script.js"&gt;&lt;/script&gt;
+</pre>
+   </li>
+   <li>Add your grid definitions to the <code>RegisterGrids</code> method in the <code>MVCGridConfig</code> file under the App_Start folder. See below for example.</li>
+   <li>Use the grids in your view by adding the using <code>@using MVCGrid.Web</code> and then the html helper <code>@Html.MVCGrid("YourGridName")</code></li>
+</ol>
+<h3>Manually Installing</h3>
+<ol>
+   <li>Add a reference to MVCGrid.dll</li>
+   <li>Create a file called <code>MVCGridConfig.cs</code> under the App_Start folder</li>
+   <li>
+	  Add the following contents to the new file inside the namespace section:
+	  <pre>using MVCGrid.Web;
+public class MVCGridConfig
+{
+public static void RegisterGrids()
+{
+// add your Grid definitions here, using the MVCGridDefinitionTable.Add method
+}
+}
+</pre>
+   </li>
+   <li>
+	  Add the following line to <code>Global.asax</code> in the <code>Application_Start()</code> method
+	  <pre>MVCGridConfig.RegisterGrids();
+</pre>
+   </li>
+   <li>
+	  Add the following to your web.config:
+	  <pre>  &lt;system.webServer&gt;
+&lt;handlers&gt;
+&lt;add name="MVCGridHandler" verb="*" path="MVCGridHandler.axd" type="MVCGrid.Web.MVCGridHandler, MVCGrid" /&gt;
+&lt;/handlers&gt;
+&lt;/system.webServer&gt;
+</pre>
+   </li>
+   <li>
+	  Add the javascript reference to your _Layout page after jquery is referenced:
+	  <pre>&lt;!-- Be sure this is after jquery reference --&gt;
+&lt;script src="~/MVCGridHandler.axd/script.js"&gt;&lt;/script&gt;
+</pre>
+   </li>
+   <li>Add your grid definitions to the method above. See below for example.</li>
+   <li>Use the grids in your view by adding the using <code>@using MVCGrid.Web</code> and then the html helper <code>@Html.MVCGrid("YourGridName")</code></li>
+</ol>
+<h2>Creating Grid Definitions</h2>
+<p>Below is a basic example of how to configure a grid. See the documenation or demos for additional properties.</p>
+<div class="panel panel-default">
+   <div class="panel-heading">Inside <strong>MVCGridConfig.cs</strong></div>
+   <div class="panel-body">
+	  <pre class="brush: csharp">MVCGridDefinitionTable.Add("UsageExample", new MVCGridBuilder&lt;YourModelItem&gt;()
+.WithAuthorizationType(AuthorizationType.AllowAnonymous)
+.AddColumns(cols =&gt;
+{
+// Add your columns here
+cols.Add("UniqueColumnName").WithHeaderText("Any Header")
+.WithValueExpression(i =&gt; i.YourProperty); // use the Value Expression to return the cell text for this column
+cols.Add().WithColumnName("UrlExample")
+.WithHeaderText("Edit")
+.WithValueExpression((i, c) =&gt; c.UrlHelper.Action("detail", "demo", new { id = i.YourProperty }));
+})
+.WithRetrieveDataMethod((context) =&gt;
+{
+// Query your data here. Obey Ordering, paging and filtering paramters given in the context.QueryOptions.
+// Use Entity Framwork, a module from your IoC Container, or any other method.
+// Return QueryResult object containing IEnumerable&lt;YouModelItem&gt;
+return new QueryResult&lt;YourModelItem&gt;()
+{
+Items = new List&lt;YourModelItem&gt;(),
+TotalRecords = 0 // if paging is enabled, return the total number of records of all pages
+};
+})
+);
+</pre>
+   </div>
+</div>
+<h2>Non-Fluent Example</h2>
+<p>You can also confugre the grids using the non-fluent method if you prefer.</p>
+<pre class="brush: csharp">GridDefinition&lt;YourModelItem&gt; def = new GridDefinition&lt;YourModelItem&gt;();
+
+GridColumn&lt;YourModelItem&gt; column = new GridColumn&lt;YourModelItem&gt;();
+column.ColumnName = "UniqueColumnName";
+column.HeaderText = "Any Header";
+column.ValueExpression = (i, c) =&gt; i.YourProperty;
+def.AddColumn(column);
+
+def.RetrieveData = (options) =&gt;
+{
+return new QueryResult&lt;YourModelItem&gt;()
+{
+Items = new List&lt;YourModelItem&gt;(),
+TotalRecords = 0
+};
+};
+
+MVCGridDefinitionTable.Add("NonFluentUsageExample", def);
+</pre>
+<h2>Setting Defaults</h2>
+<p>To set defaults for multiple grids, create a <code>GridDefaults</code> object and set the desired properties. Then pass that <code>GridDefaults</code> object into the GridBuilder or GridDefinition when creating it.</p>
+<pre class="brush: csharp">GridDefaults defaultSet1 = new GridDefaults()
+{
+Paging = true,
+ItemsPerPage = 20,
+Sorting = true,
+NoResultsMessage = "Sorry, no results were found"
+};
+
+MVCGridDefinitionTable.Add("UsageExample",
+new MVCGridBuilder&lt;YourModelItem&gt;(defaultSet1) // pass in defaults object to ctor
+.AddColumns(cols =&gt;
+{
+// add columns
+})
+.WithRetrieveDataMethod((context) =&gt;
+{
+//get data
+return new QueryResult&lt;YourModelItem&gt;();
+})
+);
+</pre>
+<p class="lead">See <a href="{{ 'demo.html' | relative_url }}">Demos Page</a> for more examples.</p>
+<hr>

@@ -1,148 +1,115 @@
 ---
 layout: default
-title: Getting Started - MVCGrid.Net
+title: MVCGrid.Net
 ---
-<h2>Prerequisites</h2>
+<p>A grid for ASP.NET MVC and Bootstrap with ajax paging and sorting. Also has filtering support, export to csv, back button support, and graceful degradation.</p>
+
+<p>The primary goal of this project is to provide the core grid functionality, along with a very simple and easy-to-use client-side API to allow you to easily add the additional front-end interaction you need. You can add it to your project very easily and get it running with minimal effort, but it also has the extensibility to customize when needed.</p>
+
+<p>You configure your grids on app start, and provide a function callback to actually query your data.  The library will handle the ajax requests. It will parse and validate the requested options and then pass the QueryOptions to your function to retrieve the data. </p>
+
+<h2>Features</h2>
 <ul>
-   <li>MVC 3 or greater</li>
-   <li>jQuery</li>
-   <li>Bootstrap 3 (Or you can create your own custom style.)</li>
+    <li>Uses your existing model objects</li>
+    <li>Server-side sorting and paging using AJAX</li>
+    <li>updates query string to support maintaining grid state when navigating back</li>
+    <li>gracefully degrades on older browsers (works on IE8)</li>
+    <li>Built-in exporting to csv</li>
+    <li>Filtering and column visibility support with minimal client-side code</li>
 </ul>
-<h2>Installation</h2>
-<h3>Using NuGet Package</h3>
-<ol>
-   <li>
-	  Install the NuGet Package
-	  <div class="nuget-badge">
-		 <p>
-			<code>
-			PM&gt; Install-Package MVCGrid.Net
-			</code>
-		 </p>
-	  </div>
-   </li>
-   <li>
-	  Add the javascript reference to your _Layout page after jquery is referenced:
-	  <pre>&lt;!-- Be sure this is after jquery reference --&gt;
-&lt;script src="~/MVCGridHandler.axd/script.js"&gt;&lt;/script&gt;
-</pre>
-   </li>
-   <li>Add your grid definitions to the <code>RegisterGrids</code> method in the <code>MVCGridConfig</code> file under the App_Start folder. See below for example.</li>
-   <li>Use the grids in your view by adding the using <code>@using MVCGrid.Web</code> and then the html helper <code>@Html.MVCGrid("YourGridName")</code></li>
-</ol>
-<h3>Manually Installing</h3>
-<ol>
-   <li>Add a reference to MVCGrid.dll</li>
-   <li>Create a file called <code>MVCGridConfig.cs</code> under the App_Start folder</li>
-   <li>
-	  Add the following contents to the new file inside the namespace section:
-	  <pre>using MVCGrid.Web;
-public class MVCGridConfig
-{
-public static void RegisterGrids()
-{
-// add your Grid definitions here, using the MVCGridDefinitionTable.Add method
-}
-}
-</pre>
-   </li>
-   <li>
-	  Add the following line to <code>Global.asax</code> in the <code>Application_Start()</code> method
-	  <pre>MVCGridConfig.RegisterGrids();
-</pre>
-   </li>
-   <li>
-	  Add the following to your web.config:
-	  <pre>  &lt;system.webServer&gt;
-&lt;handlers&gt;
-&lt;add name="MVCGridHandler" verb="*" path="MVCGridHandler.axd" type="MVCGrid.Web.MVCGridHandler, MVCGrid" /&gt;
-&lt;/handlers&gt;
-&lt;/system.webServer&gt;
-</pre>
-   </li>
-   <li>
-	  Add the javascript reference to your _Layout page after jquery is referenced:
-	  <pre>&lt;!-- Be sure this is after jquery reference --&gt;
-&lt;script src="~/MVCGridHandler.axd/script.js"&gt;&lt;/script&gt;
-</pre>
-   </li>
-   <li>Add your grid definitions to the method above. See below for example.</li>
-   <li>Use the grids in your view by adding the using <code>@using MVCGrid.Web</code> and then the html helper <code>@Html.MVCGrid("YourGridName")</code></li>
-</ol>
-<h2>Creating Grid Definitions</h2>
-<p>Below is a basic example of how to configure a grid. See the documenation or demos for additional properties.</p>
+
+
+<h2>Example</h2>
+
 <div class="panel panel-default">
-   <div class="panel-heading">Inside <strong>MVCGridConfig.cs</strong></div>
-   <div class="panel-body">
-	  <pre class="brush: csharp">MVCGridDefinitionTable.Add("UsageExample", new MVCGridBuilder&lt;YourModelItem&gt;()
-.WithAuthorizationType(AuthorizationType.AllowAnonymous)
-.AddColumns(cols =&gt;
-{
-// Add your columns here
-cols.Add("UniqueColumnName").WithHeaderText("Any Header")
-.WithValueExpression(i =&gt; i.YourProperty); // use the Value Expression to return the cell text for this column
-cols.Add().WithColumnName("UrlExample")
-.WithHeaderText("Edit")
-.WithValueExpression((i, c) =&gt; c.UrlHelper.Action("detail", "demo", new { id = i.YourProperty }));
-})
-.WithRetrieveDataMethod((context) =&gt;
-{
-// Query your data here. Obey Ordering, paging and filtering paramters given in the context.QueryOptions.
-// Use Entity Framwork, a module from your IoC Container, or any other method.
-// Return QueryResult object containing IEnumerable&lt;YouModelItem&gt;
-return new QueryResult&lt;YourModelItem&gt;()
-{
-Items = new List&lt;YourModelItem&gt;(),
-TotalRecords = 0 // if paging is enabled, return the total number of records of all pages
-};
-})
-);
-</pre>
-   </div>
+    <div class="panel-body">
+            
+        
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-inline">
+            <div class="form-group">
+                <label>
+                    Page Size: <select class="form-control" data-mvcgrid-type="pageSize" data-mvcgrid-name="TestGrid">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="form-inline pull-right">
+            <div class="btn-group">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Fields
+                        </button>
+                        <ul class="dropdown-menu" role="menu" data-mvcgrid-type="columnVisibilityList" data-mvcgrid-name="TestGrid"><li><a><label><input type="checkbox" name="TestGridcols" value="Id" checked="" disabled=""> Id</label></a></li><li><a><label><input type="checkbox" name="TestGridcols" value="FirstName" checked=""> First Name</label></a></li><li><a><label><input type="checkbox" name="TestGridcols" value="LastName" checked=""> Last Name</label></a></li><li><a><label><input type="checkbox" name="TestGridcols" value="FullName"> Full Name</label></a></li><li><a><label><input type="checkbox" name="TestGridcols" value="StartDate" checked=""> Start Date</label></a></li><li><a><label><input type="checkbox" name="TestGridcols" value="Status" checked=""> Status</label></a></li><li><a><label><input type="checkbox" name="TestGridcols" value="Gender" checked=""> Gender</label></a></li><li><a><label><input type="checkbox" name="TestGridcols" value="Email"> Email</label></a></li></ul>
+                    </div>
+                                    <button class="btn btn-default" data-mvcgrid-type="export" data-mvcgrid-name="TestGrid">
+                        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Export
+                    </button>
+            </div>
+
+            <span>&nbsp;</span>
+            <div class="form-group">
+                <label>Search: <input type="search" placeholder="Search" class="form-control" data-mvcgrid-type="additionalQueryOption" data-mvcgrid-option="search" data-mvcgrid-name="TestGrid" data-mvcgrid-apply-additional="keyup"></label>
+            </div>
+        </div>
+    </div>
 </div>
-<h2>Non-Fluent Example</h2>
-<p>You can also confugre the grids using the non-fluent method if you prefer.</p>
-<pre class="brush: csharp">GridDefinition&lt;YourModelItem&gt; def = new GridDefinition&lt;YourModelItem&gt;();
 
-GridColumn&lt;YourModelItem&gt; column = new GridColumn&lt;YourModelItem&gt;();
-column.ColumnName = "UniqueColumnName";
-column.HeaderText = "Any Header";
-column.ValueExpression = (i, c) =&gt; i.YourProperty;
-def.AddColumn(column);
 
-def.RetrieveData = (options) =&gt;
-{
-return new QueryResult&lt;YourModelItem&gt;()
-{
-Items = new List&lt;YourModelItem&gt;(),
-TotalRecords = 0
-};
-};
+        <div id="MVCGridContainer_TestGrid" class="MVCGridContainer"><input type="hidden" name="MVCGridName" value="TestGrid"><div id="MVCGrid_TestGrid_JsonData" style="display: none">{"name": "TestGrid","qsPrefix": "","preloaded": true,"clientLoading": "","clientLoadingComplete": "","renderingMode": "renderingengine","pageParameters": {}}</div><div id="MVCGrid_ErrorMessage_TestGrid" style="display: none;"><div class="alert alert-warning" role="alert">There was a problem loading the grid.</div></div><div id="MVCGrid_Loading_TestGrid" class="text-center" style="visibility: hidden">&nbsp;&nbsp;&nbsp;<img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/ajaxloader.gif" alt="Processing" style="width: 15px; height: 15px;">&nbsp;Processing...</div><div id="MVCGridTableHolder_TestGrid"><table id="MVCGridTable_TestGrid" class="table table-striped table-bordered"><thead>
+  <tr>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;Id&quot;, &quot;Asc&quot;); return false;">Id <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sortdown.png" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;FirstName&quot;, &quot;Asc&quot;); return false;">First Name <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sort.png" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;LastName&quot;, &quot;Asc&quot;); return false;">Last Name <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sort.png" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;StartDate&quot;, &quot;Asc&quot;); return false;">Start Date <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sort.png" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;Status&quot;, &quot;Asc&quot;); return false;">Status <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sort.png" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;Gender&quot;, &quot;Asc&quot;); return false;">Gender <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sort.png" class="pull-right"></th>
+  </tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/1000">1000</a></td><td>Patricia</td><td>Jacobs</td><td>10/19/2013</td><td class="success">Active</td><td>Female</td>  </tr>
+<tr>
+<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/999">999</a></td><td>Jeffrey</td><td>Shaw</td><td>9/25/2012</td><td class="success">Active</td><td>Male</td>  </tr>
+<tr>
+<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/998">998</a></td><td>Dorothy</td><td>Nguyen</td><td>11/21/2014</td><td class="danger">Inactive</td><td>Female</td>  </tr>
+<tr>
+<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/997">997</a></td><td>Kathryn</td><td>Cruz</td><td>7/29/2014</td><td class="danger">Inactive</td><td>Female</td>  </tr>
+<tr>
+<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/996">996</a></td><td>Evelyn</td><td>Jacobs</td><td>10/16/2012</td><td class="danger">Inactive</td><td>Female</td>  </tr>
+<tr>
+<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/995">995</a></td><td>Michael</td><td>Wilson</td><td>2/9/2013</td><td class="danger">Inactive</td><td>Male</td>  </tr>
+<tr>
+<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/994">994</a></td><td>Nancy</td><td>Collins</td><td>3/31/2013</td><td class="danger">Inactive</td><td>Female</td>  </tr>
+<tr>
+<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/993">993</a></td><td>Joyce</td><td>Crawford</td><td>10/24/2013</td><td class="success">Active</td><td>Female</td>  </tr>
+<tr>
+<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/992">992</a></td><td>Martin</td><td>Frazier</td><td>6/29/2014</td><td class="danger">Inactive</td><td>Male</td>  </tr>
+<tr>
+<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/991">991</a></td><td>Lois</td><td>Snyder</td><td>4/13/2013</td><td class="danger">Inactive</td><td>Female</td>  </tr>
+</tbody>
+</table>
+<div class="row"><div class="col-xs-6">Showing 1 to 10 of 1000 entries</div><div class="col-xs-6"><ul class="pagination pull-right" style="margin-top: 0;"><li class="disabled"><a href="#" aria-label="Previous" onclick="return false;"><span aria-hidden="true">« Previous</span></a></li><li class="active"><a href="#" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 1); return false;">1</a></li><li><a href="#" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 2); return false;">2</a></li><li><a href="#" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 3); return false;">3</a></li><li><a href="#" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 4); return false;">4</a></li><li><a href="#" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 5); return false;">5</a></li><li><a href="#" aria-label="Next" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 2); return false;"><span aria-hidden="true">Next »</span></a></li></ul></div></div><div id="MVCGrid_TestGrid_ContextJsonData" style="display: none;">{"name": "TestGrid","sortColumn": "Id","sortDirection": "Dsc","itemsPerPage": 10,"pageNumber": 1,"columnVisibility": {"Id": {"headerText": "Id","visible": true,"allow": false},"FirstName": {"headerText": "First Name","visible": true,"allow": true},"LastName": {"headerText": "Last Name","visible": true,"allow": true},"FullName": {"headerText": "Full Name","visible": false,"allow": true},"StartDate": {"headerText": "Start Date","visible": true,"allow": true},"Status": {"headerText": "Status","visible": true,"allow": true},"Gender": {"headerText": "Gender","visible": true,"allow": true},"Email": {"headerText": "Email","visible": false,"allow": true},"Url": {"headerText": "Url","visible": false,"allow": false}},"filters": {},"additionalQueryOptions": {"search": ""}}</div></div></div>
 
-MVCGridDefinitionTable.Add("NonFluentUsageExample", def);
-</pre>
-<h2>Setting Defaults</h2>
-<p>To set defaults for multiple grids, create a <code>GridDefaults</code> object and set the desired properties. Then pass that <code>GridDefaults</code> object into the GridBuilder or GridDefinition when creating it.</p>
-<pre class="brush: csharp">GridDefaults defaultSet1 = new GridDefaults()
-{
-Paging = true,
-ItemsPerPage = 20,
-Sorting = true,
-NoResultsMessage = "Sorry, no results were found"
-};
+    </div>
+</div>
 
-MVCGridDefinitionTable.Add("UsageExample",
-new MVCGridBuilder&lt;YourModelItem&gt;(defaultSet1) // pass in defaults object to ctor
-.AddColumns(cols =&gt;
-{
-// add columns
-})
-.WithRetrieveDataMethod((context) =&gt;
-{
-//get data
-return new QueryResult&lt;YourModelItem&gt;();
-})
-);
-</pre>
-<p class="lead">See <a href="/demo">Demos Page</a> for more examples.</p>
-<hr>
+<p class="lead">Here is the view markup for the above grid:</p>
+<div><div id="highlighter_808766" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">&lt;div class=</code><code class="js string">"panel panel-default"</code><code class="js plain">&gt;</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">&lt;div class=</code><code class="js string">"panel-body"</code><code class="js plain">&gt;</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">@Html.Partial(</code><code class="js string">"_MVCGridToolbar"</code><code class="js plain">, </code><code class="js keyword">new</code> <code class="js plain">MVCGridToolbarModel()</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">{</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">MVCGridName = </code><code class="js string">"TestGrid"</code><code class="js plain">,</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">PageSize = </code><code class="js keyword">true</code><code class="js plain">,</code></div><div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">ColumnVisibility = </code><code class="js keyword">true</code><code class="js plain">,</code></div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">Export = </code><code class="js keyword">true</code><code class="js plain">,</code></div><div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">GlobalSearch = </code><code class="js keyword">true</code></div><div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">})</code></div><div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">@Html.MVCGrid(</code><code class="js string">"TestGrid"</code><code class="js plain">)</code></div><div class="line number13 index12 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">&lt;/div&gt;</code></div><div class="line number14 index13 alt1"><code class="js plain">&lt;/div&gt;</code></div></div></td></tr></tbody></table></div></div>
+
+<p class="lead">Below is the only code needed to query the data and display the grid:</p>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Inside <strong>MVCGridConfig.cs</strong></div>
+    <div class="panel-body">
+        <div><div id="highlighter_546579" class="syntaxhighlighter  csharp"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div><div class="line number18 index17 alt1">18</div><div class="line number19 index18 alt2">19</div><div class="line number20 index19 alt1">20</div><div class="line number21 index20 alt2">21</div><div class="line number22 index21 alt1">22</div><div class="line number23 index22 alt2">23</div><div class="line number24 index23 alt1">24</div><div class="line number25 index24 alt2">25</div><div class="line number26 index25 alt1">26</div><div class="line number27 index26 alt2">27</div><div class="line number28 index27 alt1">28</div><div class="line number29 index28 alt2">29</div><div class="line number30 index29 alt1">30</div><div class="line number31 index30 alt2">31</div><div class="line number32 index31 alt1">32</div><div class="line number33 index32 alt2">33</div><div class="line number34 index33 alt1">34</div><div class="line number35 index34 alt2">35</div><div class="line number36 index35 alt1">36</div><div class="line number37 index36 alt2">37</div><div class="line number38 index37 alt1">38</div><div class="line number39 index38 alt2">39</div><div class="line number40 index39 alt1">40</div><div class="line number41 index40 alt2">41</div><div class="line number42 index41 alt1">42</div><div class="line number43 index42 alt2">43</div><div class="line number44 index43 alt1">44</div><div class="line number45 index44 alt2">45</div><div class="line number46 index45 alt1">46</div><div class="line number47 index46 alt2">47</div><div class="line number48 index47 alt1">48</div><div class="line number49 index48 alt2">49</div><div class="line number50 index49 alt1">50</div><div class="line number51 index50 alt2">51</div><div class="line number52 index51 alt1">52</div><div class="line number53 index52 alt2">53</div><div class="line number54 index53 alt1">54</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="csharp plain">MVCGridDefinitionTable.Add(</code><code class="csharp string">"TestGrid"</code><code class="csharp plain">, </code><code class="csharp keyword">new</code> <code class="csharp plain">MVCGridBuilder&lt;Person&gt;(colDefauls)</code></div><div class="line number2 index1 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithAuthorizationType(AuthorizationType.AllowAnonymous)</code></div><div class="line number3 index2 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithSorting(sorting: </code><code class="csharp keyword">true</code><code class="csharp plain">, defaultSortColumn: </code><code class="csharp string">"Id"</code><code class="csharp plain">, defaultSortDirection: SortDirection.Dsc)</code></div><div class="line number4 index3 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithPaging(paging: </code><code class="csharp keyword">true</code><code class="csharp plain">, itemsPerPage: 10, allowChangePageSize: </code><code class="csharp keyword">true</code><code class="csharp plain">, maxItemsPerPage: 100)</code></div><div class="line number5 index4 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithAdditionalQueryOptionNames(</code><code class="csharp string">"search"</code><code class="csharp plain">)</code></div><div class="line number6 index5 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.AddColumns(cols =&gt;</code></div><div class="line number7 index6 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">{</code></div><div class="line number8 index7 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">cols.Add(</code><code class="csharp string">"Id"</code><code class="csharp plain">).WithValueExpression((p, c) =&gt; c.UrlHelper.Action(</code><code class="csharp string">"detail"</code><code class="csharp plain">, </code><code class="csharp string">"demo"</code><code class="csharp plain">, </code><code class="csharp keyword">new</code> <code class="csharp plain">{ id = p.Id }))</code></div><div class="line number9 index8 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithValueTemplate(</code><code class="csharp string">"&lt;a href='{Value}'&gt;{Model.Id}&lt;/a&gt;"</code><code class="csharp plain">, </code><code class="csharp keyword">false</code><code class="csharp plain">)</code></div><div class="line number10 index9 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithPlainTextValueExpression(p =&gt; p.Id.ToString());</code></div><div class="line number11 index10 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">cols.Add(</code><code class="csharp string">"FirstName"</code><code class="csharp plain">).WithHeaderText(</code><code class="csharp string">"First Name"</code><code class="csharp plain">)</code></div><div class="line number12 index11 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithVisibility(</code><code class="csharp keyword">true</code><code class="csharp plain">, </code><code class="csharp keyword">true</code><code class="csharp plain">)</code></div><div class="line number13 index12 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithValueExpression(p =&gt; p.FirstName);</code></div><div class="line number14 index13 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">cols.Add(</code><code class="csharp string">"LastName"</code><code class="csharp plain">).WithHeaderText(</code><code class="csharp string">"Last Name"</code><code class="csharp plain">)</code></div><div class="line number15 index14 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithVisibility(</code><code class="csharp keyword">true</code><code class="csharp plain">, </code><code class="csharp keyword">true</code><code class="csharp plain">)</code></div><div class="line number16 index15 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithValueExpression(p =&gt; p.LastName);</code></div><div class="line number17 index16 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">cols.Add(</code><code class="csharp string">"FullName"</code><code class="csharp plain">).WithHeaderText(</code><code class="csharp string">"Full Name"</code><code class="csharp plain">)</code></div><div class="line number18 index17 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithValueTemplate(</code><code class="csharp string">"{Model.FirstName} {Model.LastName}"</code><code class="csharp plain">)</code></div><div class="line number19 index18 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithVisibility(visible: </code><code class="csharp keyword">false</code><code class="csharp plain">, allowChangeVisibility: </code><code class="csharp keyword">true</code><code class="csharp plain">)</code></div><div class="line number20 index19 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithSorting(</code><code class="csharp keyword">false</code><code class="csharp plain">);</code></div><div class="line number21 index20 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">cols.Add(</code><code class="csharp string">"StartDate"</code><code class="csharp plain">).WithHeaderText(</code><code class="csharp string">"Start Date"</code><code class="csharp plain">)</code></div><div class="line number22 index21 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithVisibility(visible: </code><code class="csharp keyword">true</code><code class="csharp plain">, allowChangeVisibility: </code><code class="csharp keyword">true</code><code class="csharp plain">)</code></div><div class="line number23 index22 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithValueExpression(p =&gt; p.StartDate.HasValue ? p.StartDate.Value.ToShortDateString() : </code><code class="csharp string">""</code><code class="csharp plain">);</code></div><div class="line number24 index23 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">cols.Add(</code><code class="csharp string">"Status"</code><code class="csharp plain">)</code></div><div class="line number25 index24 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithSortColumnData(</code><code class="csharp string">"Active"</code><code class="csharp plain">)</code></div><div class="line number26 index25 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithVisibility(visible: </code><code class="csharp keyword">true</code><code class="csharp plain">, allowChangeVisibility: </code><code class="csharp keyword">true</code><code class="csharp plain">)</code></div><div class="line number27 index26 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithHeaderText(</code><code class="csharp string">"Status"</code><code class="csharp plain">)</code></div><div class="line number28 index27 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithValueExpression(p =&gt; p.Active ? </code><code class="csharp string">"Active"</code> <code class="csharp plain">: </code><code class="csharp string">"Inactive"</code><code class="csharp plain">)</code></div><div class="line number29 index28 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithCellCssClassExpression(p =&gt; p.Active ? </code><code class="csharp string">"success"</code> <code class="csharp plain">: </code><code class="csharp string">"danger"</code><code class="csharp plain">);</code></div><div class="line number30 index29 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">cols.Add(</code><code class="csharp string">"Gender"</code><code class="csharp plain">).WithValueExpression((p, c) =&gt; p.Gender)</code></div><div class="line number31 index30 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithAllowChangeVisibility(</code><code class="csharp keyword">true</code><code class="csharp plain">);</code></div><div class="line number32 index31 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">cols.Add(</code><code class="csharp string">"Email"</code><code class="csharp plain">)</code></div><div class="line number33 index32 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithVisibility(visible: </code><code class="csharp keyword">false</code><code class="csharp plain">, allowChangeVisibility: </code><code class="csharp keyword">true</code><code class="csharp plain">)</code></div><div class="line number34 index33 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithValueExpression(p =&gt; p.Email);</code></div><div class="line number35 index34 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">cols.Add(</code><code class="csharp string">"Url"</code><code class="csharp plain">).WithVisibility(</code><code class="csharp keyword">false</code><code class="csharp plain">)</code></div><div class="line number36 index35 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithValueExpression((p, c) =&gt; c.UrlHelper.Action(</code><code class="csharp string">"detail"</code><code class="csharp plain">, </code><code class="csharp string">"demo"</code><code class="csharp plain">, </code><code class="csharp keyword">new</code> <code class="csharp plain">{ id = p.Id }));</code></div><div class="line number37 index36 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">})</code></div><div class="line number38 index37 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp comments">//.WithAdditionalSetting(MVCGrid.Rendering.BootstrapRenderingEngine.SettingNameTableClass, "notreal") // Example of changing table css class</code></div><div class="line number39 index38 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">.WithRetrieveDataMethod((context) =&gt;</code></div><div class="line number40 index39 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">{</code></div><div class="line number41 index40 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">var options = context.QueryOptions;</code></div><div class="line number42 index41 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp keyword">int</code> <code class="csharp plain">totalRecords;</code></div><div class="line number43 index42 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">var repo = DependencyResolver.Current.GetService&lt;IPersonRepository&gt;();</code></div><div class="line number44 index43 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp keyword">string</code> <code class="csharp plain">globalSearch = options.GetAdditionalQueryOptionString(</code><code class="csharp string">"search"</code><code class="csharp plain">);</code></div><div class="line number45 index44 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp keyword">string</code> <code class="csharp plain">sortColumn = options.GetSortColumnData&lt;</code><code class="csharp keyword">string</code><code class="csharp plain">&gt;();</code></div><div class="line number46 index45 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">var items = repo.GetData(</code><code class="csharp keyword">out</code> <code class="csharp plain">totalRecords, globalSearch, options.GetLimitOffset(), options.GetLimitRowcount(),</code></div><div class="line number47 index46 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">sortColumn, options.SortDirection == SortDirection.Dsc);</code></div><div class="line number48 index47 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp keyword">return</code> <code class="csharp keyword">new</code> <code class="csharp plain">QueryResult&lt;Person&gt;()</code></div><div class="line number49 index48 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">{</code></div><div class="line number50 index49 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">Items = items,</code></div><div class="line number51 index50 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">TotalRecords = totalRecords</code></div><div class="line number52 index51 alt1"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">};</code></div><div class="line number53 index52 alt2"><code class="csharp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="csharp plain">})</code></div><div class="line number54 index53 alt1"><code class="csharp plain">);</code></div></div></td></tr></tbody></table></div></div>
+    </div>
+</div>
