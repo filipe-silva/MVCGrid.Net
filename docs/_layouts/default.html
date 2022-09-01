@@ -39,7 +39,14 @@
 			  <a class="navbar-brand" href="/">MVCGrid.Net</a>
 		   </div>
 		   <div class="navbar-collapse collapse">
-			{% include nav.html nav=site.page.nav %}
+			  <ul class="nav navbar-nav">
+				 <li>[Home]({{ 'home.html' | relative_url }})</li>
+				 <li>[Getting Started]({{ 'gettingstarted.html' | relative_url }})</li>
+				 <li>[Demos]({{ 'demo.html' | relative_url }})</li>
+				 <li>[Documentation]({{ 'documentation.html' | relative_url }})</li>
+				 <li>[Download]({{ 'download.html' | relative_url }})</li>
+				 <li>[Support]({{ 'support.html' | relative_url }})</li>
+			  </ul>
 		   </div>
 		</div>
 		</div>
