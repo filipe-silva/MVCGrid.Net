@@ -53,7 +53,7 @@ namespace MVCGrid.Engine
 
             if (gridDefinition.RenderingEngines[engineName] == null)
             {
-                throw new ConfigurationException(String.Format("The requested default rendering engine '{0}' was not found.", engineName));
+                throw new ConfigurationException(string.Format("The requested default rendering engine '{0}' was not found.", engineName));
             }
 
             string typeString = gridDefinition.RenderingEngines[engineName].Type;
@@ -122,7 +122,7 @@ namespace MVCGrid.Engine
                 model.PagingModel.TotalRecords = totalRecords.Value;
 
                 model.PagingModel.FirstRecord = (currentPageIndex * gridContext.QueryOptions.ItemsPerPage.Value) + 1;
-                if(model.PagingModel.FirstRecord > model.PagingModel.TotalRecords) 
+                if (model.PagingModel.FirstRecord > model.PagingModel.TotalRecords)
                 {
                     model.PagingModel.FirstRecord = model.PagingModel.TotalRecords;
                 }
@@ -183,7 +183,7 @@ namespace MVCGrid.Engine
             }
         }
 
-        public string GetBasePageHtml(HtmlHelper helper, string gridName, IMVCGridDefinition grid, object pageParameters)
+        public string GetBasePageHtml(HtmlHelper helper, string gridName, IMVCGridDefinition grid, Dictionary<string, string> pageParameters)
         {
             string preload = "";
             if (grid.QueryOnPageLoad && grid.PreloadData)
@@ -248,33 +248,23 @@ namespace MVCGrid.Engine
             return container;
         }
 
-        private static string RenderPreloadedGridHtml(HtmlHelper helper, IMVCGridDefinition grid, string gridName, object pageParameters)
+        private static string RenderPreloadedGridHtml(HtmlHelper helper, IMVCGridDefinition grid, string gridName, Dictionary<string, string> pageParameters)
         {
             string preload = "";
 
             var options = QueryStringParser.ParseOptions(grid, System.Web.HttpContext.Current.Request);
-
+            
             // set the page parameters for the preloaded grid
-            Dictionary<string, string> pageParamsDict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            if (pageParameters != null)
-            {
-                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(pageParameters))
-                {
-                    object obj2 = descriptor.GetValue(pageParameters);
-                    pageParamsDict.Add(descriptor.Name, obj2.ToString());
-                }
-            }
             if (grid.PageParameterNames.Count > 0)
             {
                 foreach (var aqon in grid.PageParameterNames)
                 {
                     string val = "";
 
-                    if (pageParamsDict.ContainsKey(aqon))
+                    if (pageParameters.ContainsKey(aqon))
                     {
-                        val = pageParamsDict[aqon];
+                        val = pageParameters[aqon];
                     }
-
                     options.PageParameters[aqon] = val;
                 }
             }
@@ -306,8 +296,7 @@ namespace MVCGrid.Engine
             TempDataDictionary tdd = new TempDataDictionary();
             using (var sw = new StringWriter())
             {
-                var viewResult = ViewEngines.Engines.FindPartialView(controllerContext,
-                                                                         gridContext.GridDefinition.ViewPath);
+                var viewResult = ViewEngines.Engines.FindPartialView(controllerContext, gridContext.GridDefinition.ViewPath);
                 var viewContext = new ViewContext(controllerContext, viewResult.View, vdd, tdd, sw);
                 viewResult.View.Render(viewContext, sw);
                 viewResult.ViewEngine.ReleaseView(controllerContext, viewResult.View);
