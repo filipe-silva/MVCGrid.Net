@@ -1,35 +1,42 @@
 <html>
    <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-site-verification" content="Wo32XWaxkVV2sIxN3C1MxLK2pTDZL5LBck6fFwQUDg0">
+	<title>{{ page.title }}</title>
+	<script src="/bundles/modernizr?v=wBEWDufH_8Md-Pbioxomt90vm6tJN2Pyy9u9zHtWsPo1"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shThemeDefault.min.css">
+	<style type="text/css">
+		.nuget-badge code {
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			background-color: #202020;
+			border: 4px solid silver;
+			border-radius: 5px;
+			box-shadow: 2px 2px 3px #6e6e6e;
+			color: #e2e2e2;
+			display: block;
+			font: 1.5em 'andale mono','lucida console',monospace;
+			line-height: 1.5em;
+			overflow: auto;
+			padding: 15px;
+		}
+		/*https://stackoverflow.com/questions/11124777/twitter-bootstrap-navbar-fixed-top-overlapping-site*/
+		body { padding-top: 50px; }
+	</style>
+	<script src="https://code.jquery.com/jquery-3.6.1.slim.js" ="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+	<script src="/MVCGridHandler.axd/script.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushJScript.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushCSharp.min.js"></script>
    </head>
    <body>
-      <div style="position:relative;">
-         <meta charset="utf-8">
-         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <meta name="google-site-verification" content="Wo32XWaxkVV2sIxN3C1MxLK2pTDZL5LBck6fFwQUDg0">
-         <title>{{ page.title }}</title>
-         <script src="/bundles/modernizr?v=wBEWDufH_8Md-Pbioxomt90vm6tJN2Pyy9u9zHtWsPo1"></script>
-		 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-		 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.css">
-		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shThemeDefault.min.css">
-         <style type="text/css">
-            .nuget-badge code {
-            -moz-border-radius: 5px;
-            -webkit-border-radius: 5px;
-            background-color: #202020;
-            border: 4px solid silver;
-            border-radius: 5px;
-            box-shadow: 2px 2px 3px #6e6e6e;
-            color: #e2e2e2;
-            display: block;
-            font: 1.5em 'andale mono','lucida console',monospace;
-            line-height: 1.5em;
-            overflow: auto;
-            padding: 15px;
-            }
-         </style>
-		<div class="navbar navbar-inverse navbar-fixed-top">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
 			   <div class="navbar-header">
 				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -49,26 +56,19 @@
 					 <li><a href="{{ 'support.html' | relative_url }}">Support</a></li>
 				  </ul>
 			   </div>
-			</div>
-		</div>
-         <div class="container body-content">
-            <h1>{{ page.title }}</h1>
+			</div>	
+		</nav>
+		<div class="container">
+			<h1>{{ page.title }}</h1>
 			<section>
 			  {{ content }}
 			</section>
-            <footer>
-               <p>&nbsp;</p>
-            </footer>
-         </div>
-		 <script src="https://code.jquery.com/jquery-3.6.1.slim.js" ="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk=" crossorigin="anonymous"></script>
-		 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
-         <script src="/MVCGridHandler.axd/script.js"></script>
-         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js"></script>
-		 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushJScript.min.js"></script>
-		 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushCSharp.min.js"></script>
-         <script type="text/javascript">
-            SyntaxHighlighter.all();
-         </script>
-      </div>
+			<footer>
+			   <p>&nbsp;</p>
+			</footer>
+		 </div>
+		 <script type="text/javascript">
+			SyntaxHighlighter.all();
+		 </script>
    </body>
 </html>
