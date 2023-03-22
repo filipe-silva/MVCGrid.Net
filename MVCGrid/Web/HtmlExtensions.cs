@@ -75,7 +75,7 @@ namespace MVCGrid.Web
             return MVCGrid(helper, name, pageParamsDict);
         }
 
-        internal static IHtmlString MVCGrid(this HtmlHelper helper, string name, Dictionary<string, string> pageParameters)
+        private static IHtmlString MVCGrid(this HtmlHelper helper, string name, Dictionary<string, string> pageParameters)
         {
             var grid = MVCGridDefinitionTable.GetDefinitionInterface(name);
             var ge = new GridEngine();
