@@ -1,4 +1,5 @@
-﻿using MVCGrid.Interfaces;
+﻿using MVCGrid.Abstractions;
+using MVCGrid.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace MVCGrid.Web.Models
             get { return false; }
         }
 
-        public void PrepareResponse(HttpResponse httpResponse)
+        public void PrepareResponse(IGridResponse httpResponse)
         {
             httpResponse.Clear();
             httpResponse.ContentType = "text/tab-separated-values";

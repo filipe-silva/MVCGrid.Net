@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>MVCGrid.MvcWeb</AssemblyName>
+    <!-- Namespaces stay MVCGrid.* (matches embedded-resource logical names the handler looks up). -->
+    <RootNamespace>MVCGrid</RootNamespace>
+    <!-- Keep the existing hand-written Properties/AssemblyInfo.cs rather than an SDK-generated one. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="3.0.20105.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MVCGrid.Core\MVCGrid.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Static assets served by MVCGridHandler are embedded into the assembly. -->
+  <ItemGroup>
+    <None Remove="Scripts\MVCGrid.js" />
+    <None Remove="Images\ajaxloader.gif" />
+    <None Remove="Images\sort.png" />
+    <None Remove="Images\sortdown.png" />
+    <None Remove="Images\sortup.png" />
+    <EmbeddedResource Include="Scripts\MVCGrid.js" />
+    <EmbeddedResource Include="Images\ajaxloader.gif" />
+    <EmbeddedResource Include="Images\sort.png" />
+    <EmbeddedResource Include="Images\sortdown.png" />
+    <EmbeddedResource Include="Images\sortup.png" />
+  </ItemGroup>
+
+</Project>

@@ -17,7 +17,7 @@ namespace MVCGrid.RazorTemplates
             get { return true; }
         }
 
-        public void PrepareResponse(System.Web.HttpResponse response)
+        public void PrepareResponse(MVCGrid.Abstractions.IGridResponse response)
         {
         }
 

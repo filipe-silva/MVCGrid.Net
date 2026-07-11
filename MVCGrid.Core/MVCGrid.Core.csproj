@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ProjectGuid>{C0FFEE00-1111-2222-3333-444455556677}</ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <!-- The portable core takes the primary package/assembly name 'MVCGrid'.
+         The net48 adapter will ship as 'MVCGrid.Mvc5'. Namespaces stay MVCGrid.*. -->
+    <RootNamespace>MVCGrid</RootNamespace>
+    <AssemblyName>MVCGrid</AssemblyName>
+    <LangVersion>7.3</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Docs inherited from the original library have some malformed XML; don't fail the build on it. -->
+    <NoWarn>$(NoWarn);1591;1570;1587;1573</NoWarn>
+  </PropertyGroup>
+
+</Project>
