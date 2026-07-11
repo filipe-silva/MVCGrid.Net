@@ -24,18 +24,20 @@ Recorded:
 - Classic adapter targets **MVC 3.0** (widest 3/4/5 compatibility).
 - Multi-host = additional thin adapters over the unchanged core (no core rewrite).
 
+Resolved:
+- **D1 — `IGridResponse` shape.** RESOLVED via option (a): `ContentType` + `AddHeader` only. See Phase 0.
+- **D3 — Where embedded `MVCGrid.js` + images live.** RESOLVED: embedded in the core assembly. See Phase 0.
+
 Open (resolve before/while building the Core adapter):
-- **D1 — `IGridResponse` shape.** ASP.NET Core `HttpResponse` has no `Clear()`/`BufferOutput`. Options: (a) slim the interface to `ContentType` + `AddHeader` only *(recommended)*; (b) keep members, Core impl no-ops them; (c) make `PrepareResponse` return a declarative descriptor. Affects custom rendering engines.
 - **D2 — Core resource serving.** Endpoint routing (`app.MapMVCGrid()`) vs. middleware (`app.UseMVCGrid()`). *Recommend endpoint routing.*
-- **D3 — Where embedded `MVCGrid.js` + images live.** Move into the core assembly so both adapters serve identical assets *(recommended)*, vs. duplicate per adapter.
 - **D4 — View helper surface on Core.** `@Html.MVCGrid(...)` for parity *(recommended first)*, and/or a `<mvc-grid>` TagHelper (idiomatic, optional).
 - **D5 — Include `RenderingMode.Controller` (view-to-string) in the first Core release?** *Recommend deferring* to a follow-up; ship `RenderingEngine` mode first.
 
-## Phase 0 — Shared prep (benefits both adapters, low risk)
+## Phase 0 — Shared prep (benefits both adapters, low risk) — DONE
 
-- [ ] **D1:** reshape `IGridResponse` (drop `Clear`/`BufferOutput` if going with option a); update `CsvRenderingEngine`, `BootstrapRenderingEngine`, the classic `MvcGridResponse`, and the example's `TabDelimitedRenderingEngine`/`CustomHtmlRenderingEngine`.
-- [ ] **D3:** move `MVCGrid.js` + `Images/*` embedded resources from `MVCGrid.MvcWeb` into `MVCGrid.Core`; keep the `%%HANDLERPATH%%`/`%%CONTROLLERPATH%%` placeholder substitution in each adapter (path/route wiring is host-specific).
-- [ ] Verify: classic solution still builds green (VS MSBuild) and the example still renders/exports.
+- [x] **D1 (option a):** slimmed `IGridResponse` to `ContentType` + `AddHeader` (dropped `Clear`/`BufferOutput`). Updated `CsvRenderingEngine` and the example's `TabDelimitedRenderingEngine` to drop those calls; `MvcGridResponse` no longer implements them. The classic-only `Clear()`/`BufferOutput=false` now happen once in `MVCGridHandler.HandleTable` around the engine call, so export streaming behavior is preserved without leaking classic-isms into the portable contract.
+- [x] **D3:** moved `Scripts/MVCGrid.js` + `Images/*` into `MVCGrid.Core`, embedded there (shared by all adapters). `MVCGridHandler` now loads them from the core assembly (`typeof(GridEngine).Assembly`) and keeps doing the `%%HANDLERPATH%%`/`%%CONTROLLERPATH%%`/`%%ERRORDETAILS%%` substitution. Also removed empty leftover folders in `MVCGrid.MvcWeb`.
+- [x] Verify: full `MSBuild MVCGrid.sln -t:Rebuild -restore` → exit 0; resource manifest names confirmed embedded in `MVCGrid.dll` and absent from the adapter DLL. (Runtime render/export smoke-test in VS/IIS Express still recommended.)
 
 ## Phase 1 — `MVCGrid.AspNetCore` adapter, RenderingEngine mode (the MVP)
 

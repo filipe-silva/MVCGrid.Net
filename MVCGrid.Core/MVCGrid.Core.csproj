@@ -13,4 +13,19 @@
     <NoWarn>$(NoWarn);1591;1570;1587;1573</NoWarn>
   </PropertyGroup>
 
+  <!-- Client script + sort/loader icons, served by a host adapter (e.g. MVCGridHandler.axd
+       in MVCGrid.MvcWeb, or the Core endpoint). Embedded here so every adapter shares them. -->
+  <ItemGroup>
+    <None Remove="Scripts\MVCGrid.js" />
+    <None Remove="Images\ajaxloader.gif" />
+    <None Remove="Images\sort.png" />
+    <None Remove="Images\sortdown.png" />
+    <None Remove="Images\sortup.png" />
+    <EmbeddedResource Include="Scripts\MVCGrid.js" />
+    <EmbeddedResource Include="Images\ajaxloader.gif" />
+    <EmbeddedResource Include="Images\sort.png" />
+    <EmbeddedResource Include="Images\sortdown.png" />
+    <EmbeddedResource Include="Images\sortup.png" />
+  </ItemGroup>
+
 </Project>

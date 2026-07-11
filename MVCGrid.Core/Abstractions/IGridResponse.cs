@@ -2,18 +2,17 @@ namespace MVCGrid.Abstractions
 {
     /// <summary>
     /// Framework-neutral replacement for System.Web.HttpResponse, passed to
-    /// IMVCGridRenderingEngine.PrepareResponse so an engine can set content type,
-    /// headers, and buffering before its output is written. The web adapter
-    /// implements this over the host framework's response object.
+    /// IMVCGridRenderingEngine.PrepareResponse so an engine can set the content type
+    /// and response headers before its output is written. The web adapter implements
+    /// this over the host framework's response object.
     ///
-    /// Members mirror the subset of HttpResponse that rendering engines actually
-    /// use, so existing PrepareResponse method bodies compile unchanged.
+    /// Deliberately limited to what maps cleanly across hosts: classic ASP.NET
+    /// concepts like Clear() and BufferOutput are NOT here (ASP.NET Core's HttpResponse
+    /// has no equivalent); the classic adapter applies those itself around the call.
     /// </summary>
     public interface IGridResponse
     {
         string ContentType { get; set; }
-        bool BufferOutput { get; set; }
-        void Clear();
         void AddHeader(string name, string value);
     }
 }
