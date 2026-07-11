@@ -2,28 +2,35 @@
 using MVCGrid.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace MVCGrid.Web.Models
+namespace MVCGrid.Rendering
 {
-    public class TabDelimitedRenderingEngine : IMVCGridRenderingEngine
+    public class CsvRenderingEngine : IMVCGridRenderingEngine
     {
         public bool AllowsPaging
         {
             get { return false; }
         }
 
-        public void PrepareResponse(IGridResponse httpResponse)
+        public virtual string GetFilename()
+        {
+            return "export.csv";
+        }
+
+        public virtual void PrepareResponse(IGridResponse httpResponse)
         {
             httpResponse.Clear();
-            httpResponse.ContentType = "text/tab-separated-values";
-            httpResponse.AddHeader("content-disposition", "attachment; filename=\"" + "export" + ".tsv\"");
+            httpResponse.ContentType = "text/csv";
+            httpResponse.AddHeader("content-disposition", "attachment; filename=\"" + GetFilename() + "\"");
             httpResponse.BufferOutput = false;
         }
 
-        public void Render(MVCGrid.Models.RenderingModel model, MVCGrid.Models.GridContext gridContext, System.IO.TextWriter outputStream)
+        public void Render(Models.RenderingModel model, Models.GridContext gridContext, TextWriter outputStream)
         {
             var sw = outputStream;
 
@@ -32,9 +39,9 @@ namespace MVCGrid.Web.Models
             {
                 if (sbHeaderRow.Length != 0)
                 {
-                    sbHeaderRow.Append("\t");
+                    sbHeaderRow.Append(",");
                 }
-                sbHeaderRow.Append(Encode(col.Name));
+                sbHeaderRow.Append(CsvEncode(col.Name));
             }
             sbHeaderRow.AppendLine();
             sw.Write(sbHeaderRow.ToString());
@@ -48,35 +55,35 @@ namespace MVCGrid.Web.Models
 
                     if (sbRow.Length != 0)
                     {
-                        sbRow.Append("\t");
+                        sbRow.Append(",");
                     }
 
                     string val = cell.PlainText;
 
-                    sbRow.Append(Encode(val));
+                    sbRow.Append(CsvEncode(val));
                 }
                 sbRow.AppendLine();
                 sw.Write(sbRow.ToString());
             }
+
         }
 
-        private string Encode(string s)
+        private string CsvEncode(string s)
         {
             if (String.IsNullOrWhiteSpace(s))
             {
-                return "";
+                return "\"\"";
             }
 
-            if (s.Contains("\t"))
-            {
-                s = s.Replace("\t", " ");
-            }
+            string esc = s.Replace("\"", "\"\"");
 
-            return s;
+            return String.Format("\"{0}\"", esc);
         }
 
-        public void RenderContainer(MVCGrid.Models.ContainerRenderingModel model, System.IO.TextWriter outputStream)
+
+        public void RenderContainer(Models.ContainerRenderingModel model, TextWriter outputStream)
         {
+            throw new NotImplementedException("Csv Rendering Engine has no container");
         }
     }
 }

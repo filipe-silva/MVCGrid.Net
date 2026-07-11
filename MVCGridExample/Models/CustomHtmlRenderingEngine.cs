@@ -1,4 +1,5 @@
-﻿using MVCGrid.Interfaces;
+﻿using MVCGrid.Abstractions;
+using MVCGrid.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +16,7 @@ namespace MVCGrid.Web.Models
             get { return true; }
         }
 
-        public void PrepareResponse(HttpResponse response)
+        public void PrepareResponse(IGridResponse response)
         {
         }
 
