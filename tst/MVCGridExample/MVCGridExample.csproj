@@ -263,11 +263,11 @@
     <Folder Include="Views\Item\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MVCGrid.MvcWeb\MVCGrid.MvcWeb.csproj">
+    <ProjectReference Include="..\..\src\MVCGrid.MvcWeb\MVCGrid.MvcWeb.csproj">
       <Project>{7ee14ade-a4b9-4454-b16a-78b4a5b7d0be}</Project>
       <Name>MVCGrid.MvcWeb</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MVCGrid.Core\MVCGrid.Core.csproj">
+    <ProjectReference Include="..\..\src\MVCGrid.Core\MVCGrid.Core.csproj">
       <Project>{c0ffee00-1111-2222-3333-444455556677}</Project>
       <Name>MVCGrid.Core</Name>
     </ProjectReference>
