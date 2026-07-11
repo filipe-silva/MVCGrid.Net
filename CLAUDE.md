@@ -92,7 +92,15 @@ Four things a host app must do — mirrored in MVCGridExample:
 
 Reference `MVCGrid.AspNetCore` and in `Program.cs`: `builder.Services.AddMVCGrid(o => { o.HandlerPath = "/mvcgrid"; });`, then `app.MapMVCGrid();`. Register grids into `MVCGridDefinitionTable` at startup (same as classic). In `_Layout`, include the script after jQuery: `<script src="/mvcgrid/script.js"></script>`. Render with `@Html.MVCGrid("GridName")` (`@using MVCGrid.AspNetCore`). RenderingEngine mode only for now.
 
-Note: the NuGet packaging assets (`NuGetFiles/`, `MVCGrid.MvcWeb/MVCGrid.nuspec`, the old `.nuget/` folder) have **not** yet been updated for the multi-package split — treat them as stale until reworked.
+## NuGet packaging
+
+The three libraries ship as packages via **SDK-style `dotnet pack`** (no hand-written `.nuspec`). Shared metadata (version, authors, MIT license expression, repo URL, README, tags) lives in the repo-root **`Directory.Build.props`**; per-package `PackageId`/`Title`/`Description` and the README pack-include live in each `.csproj`. Current version is **3.0.0**.
+
+- `MVCGrid.Core` → package **`MVCGrid`** (netstandard2.0, zero deps; embeds JS/images).
+- `MVCGrid.MvcWeb` → **`MVCGrid.MvcWeb`** (net48; deps on `MVCGrid` + `Microsoft.AspNet.Mvc 3.0.20105.1`, both auto-emitted from the ProjectReference/PackageReference).
+- `MVCGrid.AspNetCore` → **`MVCGrid.AspNetCore`** (net8; dep on `MVCGrid`, framework-ref `Microsoft.AspNetCore.App`).
+
+The two sample apps under `tst/` set `<IsPackable>false</IsPackable>`. Pack each library with the `dotnet` CLI, e.g. `dotnet pack src/MVCGrid.Core/MVCGrid.Core.csproj -c Release -o <out>` (produces `.nupkg` + `.snupkg`). The old content-file install model (`NuGetFiles/`, the `.pp` transforms, `Install.ps1`, `MVCGrid.MvcWeb/MVCGrid.nuspec`) has been removed — consumers do the manual host setup documented above. The legacy `.nuget/` folder (`NuGet.exe`/`NuGet.targets`) is unused and can be deleted.
 
 ## Editing the example config
 

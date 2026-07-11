@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>MVCGrid.AspNetCoreExample</RootNamespace>
     <AssemblyName>MVCGrid.AspNetCoreExample</AssemblyName>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
