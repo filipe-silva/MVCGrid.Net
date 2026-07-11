@@ -11,7 +11,16 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!-- Docs inherited from the original library have some malformed XML; don't fail the build on it. -->
     <NoWarn>$(NoWarn);1591;1570;1587;1573</NoWarn>
+
+    <!-- NuGet: the portable core ships as package 'MVCGrid' (shared metadata in Directory.Build.props). -->
+    <PackageId>MVCGrid</PackageId>
+    <Title>MVCGrid.Net (core)</Title>
+    <Description>Portable netstandard2.0 core of MVCGrid.Net — a server-side data grid with AJAX paging, sorting, filtering, column visibility and CSV export. System.Web-free; consumed by a host adapter (MVCGrid.MvcWeb for classic ASP.NET MVC, MVCGrid.AspNetCore for ASP.NET Core).</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <!-- Client script + sort/loader icons, served by a host adapter (e.g. MVCGridHandler.axd
        in MVCGrid.MvcWeb, or the Core endpoint). Embedded here so every adapter shares them. -->

@@ -7,7 +7,17 @@
     <RootNamespace>MVCGrid</RootNamespace>
     <!-- Keep the existing hand-written Properties/AssemblyInfo.cs rather than an SDK-generated one. -->
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+    <!-- NuGet: classic ASP.NET MVC adapter. Depends on MVCGrid (core) via ProjectReference,
+         and on Microsoft.AspNet.Mvc 3.0 — both emitted as package dependencies by pack. -->
+    <PackageId>MVCGrid.MvcWeb</PackageId>
+    <Title>MVCGrid.Net for classic ASP.NET MVC</Title>
+    <Description>Classic ASP.NET MVC 3/4/5 host adapter for MVCGrid.Net. Provides @Html.MVCGrid, the MVCGridHandler.axd endpoint (serving the embedded client script + icons), grid registration and the System.Web glue over the portable MVCGrid core.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="System.Web" />

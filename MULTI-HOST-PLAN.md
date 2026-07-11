@@ -61,7 +61,7 @@ Decisions taken: D2 = **endpoint routing** (`MapMVCGrid`); D4 = **`@Html.MVCGrid
 
 - [ ] `<mvc-grid>` TagHelper (D4).
 - [ ] DI conveniences (options binding for error-detail, etc. — Core reads from `IConfiguration` instead of `ConfigUtility`/appSettings).
-- [ ] Packaging: `.nuspec`/package metadata for `MVCGrid`, `MVCGrid.MvcWeb`, `MVCGrid.AspNetCore` (the existing `NuGetFiles/` + `.nuget/` assets are stale and predate the split).
+- [x] Packaging: **DONE.** SDK-style `dotnet pack` for all three packages (`MVCGrid`, `MVCGrid.MvcWeb`, `MVCGrid.AspNetCore`) at **v3.0.0**. Shared metadata in repo-root `Directory.Build.props` (authors=filipe-silva, MIT license expression, repo URL, README, symbols/`.snupkg`); per-package `PackageId`/`Title`/`Description` + README pack-include in each `.csproj`. Sample apps opt out via `<IsPackable>false</IsPackable>`. Removed the stale content-install model (`MVCGrid.MvcWeb/MVCGrid.nuspec`; `NuGetFiles/` was already gone). Verified: all three pack (`.nupkg`+`.snupkg`) with correct deps — `MVCGrid.MvcWeb`→`MVCGrid`+`Microsoft.AspNet.Mvc 3.0.20105.1`, `MVCGrid.AspNetCore`→`MVCGrid`+framework-ref, core has zero deps and embeds the client assets. (Not yet pushed to nuget.org; the legacy `.nuget/` folder still exists but is unused.)
 
 ## Verification notes
 
