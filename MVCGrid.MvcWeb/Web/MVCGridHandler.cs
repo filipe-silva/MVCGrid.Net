@@ -68,54 +68,16 @@ namespace MVCGrid.Web
             }
         }
 
+        // Embedded JS/images now live in the core (MVCGrid) assembly; both adapters
+        // load them through the shared MVCGrid.Utility.EmbeddedResources accessor.
         private static string GetTextResource(string fileSuffix)
         {
-            var assembly = typeof(GridEngine).Assembly; // embedded JS/images live in the core (MVCGrid) assembly
-
-            var s = assembly.GetManifestResourceNames();
-
-            string resourceName = null;
-            foreach (var name in s)
-            {
-                if (name.Contains(fileSuffix))
-                {
-                    resourceName = name;
-                    break;
-                }
-            }
-
-            string script = null;
-            using (var textStreamReader = new StreamReader(assembly.GetManifestResourceStream(resourceName)))
-            {
-                script = textStreamReader.ReadToEnd();
-            }
-
-            return script;
+            return EmbeddedResources.GetText(fileSuffix);
         }
 
         private static byte[] GetBinaryResource(string fileSuffix)
         {
-            var assembly = typeof(GridEngine).Assembly; // embedded JS/images live in the core (MVCGrid) assembly
-
-            var s = assembly.GetManifestResourceNames();
-
-            string resourceName = null;
-            foreach (var name in s)
-            {
-                if (name.Contains(fileSuffix))
-                {
-                    resourceName = name;
-                    break;
-                }
-            }
-
-            using (Stream resFilestream = assembly.GetManifestResourceStream(resourceName))
-            {
-                if (resFilestream == null) return null;
-                byte[] ba = new byte[resFilestream.Length];
-                resFilestream.Read(ba, 0, ba.Length);
-                return ba;
-            }
+            return EmbeddedResources.GetBinary(fileSuffix);
         }
 
         public bool IsReusable

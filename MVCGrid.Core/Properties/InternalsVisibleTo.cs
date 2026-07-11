@@ -5,3 +5,4 @@ using System.Runtime.CompilerServices;
 // GridContext's internal GridDefinition setter, GridEngine.GetRenderingEngineInternal)
 // without those becoming part of the public API surface.
 [assembly: InternalsVisibleTo("MVCGrid.MvcWeb")]
+[assembly: InternalsVisibleTo("MVCGrid.AspNetCore")]

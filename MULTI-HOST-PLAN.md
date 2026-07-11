@@ -39,18 +39,18 @@ Open (resolve before/while building the Core adapter):
 - [x] **D3:** moved `Scripts/MVCGrid.js` + `Images/*` into `MVCGrid.Core`, embedded there (shared by all adapters). `MVCGridHandler` now loads them from the core assembly (`typeof(GridEngine).Assembly`) and keeps doing the `%%HANDLERPATH%%`/`%%CONTROLLERPATH%%`/`%%ERRORDETAILS%%` substitution. Also removed empty leftover folders in `MVCGrid.MvcWeb`.
 - [x] Verify: full `MSBuild MVCGrid.sln -t:Rebuild -restore` → exit 0; resource manifest names confirmed embedded in `MVCGrid.dll` and absent from the adapter DLL. (Runtime render/export smoke-test in VS/IIS Express still recommended.)
 
-## Phase 1 — `MVCGrid.AspNetCore` adapter, RenderingEngine mode (the MVP)
+## Phase 1 — `MVCGrid.AspNetCore` adapter, RenderingEngine mode (the MVP) — DONE (compile-verified)
 
-- [ ] New SDK-style project `MVCGrid.AspNetCore` (net8), `ProjectReference` to core, added to the solution + CPM.
-- [ ] Implement abstractions:
-  - [ ] `IMvcGridUrlBuilder` over `IUrlHelper` (`IUrlHelperFactory` from the current `ActionContext`).
-  - [ ] `IQueryStringReader` over `HttpRequest.Query`.
-  - [ ] `IGridResponse` over Core `HttpResponse` (per D1).
-  - [ ] Populate `GridContext.User` from `HttpContext.User` (`ClaimsPrincipal`), and `HandlerPath` from the configured route base.
-- [ ] Data endpoint + resources (D2/D3): `app.MapMVCGrid()` serving the grid AJAX (equivalent of `MVCGridHandler`/`MVCGridController`) and `script.js` + images from the core's embedded resources.
-- [ ] `@Html.MVCGrid("name")` `IHtmlHelper` extension → base-page HTML (Core equivalent of `MvcGridHtmlRenderer.GetBasePageHtml`, RenderingEngine path only).
-- [ ] Startup: `builder.Services.AddMVCGrid()` + `app.MapMVCGrid()`; grid definitions still register into the static `MVCGridDefinitionTable`.
-- [ ] Verify: a minimal net8 MVC sample renders, sorts, pages, filters, and CSV-exports.
+Decisions taken: D2 = **endpoint routing** (`MapMVCGrid`); D4 = **`@Html.MVCGrid` HtmlHelper** (TagHelper deferred); D5 = **Controller mode deferred**.
+
+- [x] New SDK-style project `MVCGrid.AspNetCore` (**net8.0**, `FrameworkReference Microsoft.AspNetCore.App`), `ProjectReference` to core, added to the solution. (No CPM entries needed — uses only a framework reference.)
+- [x] Abstractions implemented (`AspNetCoreAdapters.cs`): `IMvcGridUrlBuilder` over `IUrlHelper` (built via `IUrlHelperFactory` — from the `ViewContext` in views, from a fabricated `ActionContext` in the endpoint); `IQueryStringReader` over `HttpRequest.Query`; `IGridResponse` over `HttpResponse` (per D1). `GridContext.User` from `HttpContext.User`, `HandlerPath` from options.
+- [x] Data endpoint + resources (`MvcGridExtensions.cs` / `MvcGridRenderer.cs`): `app.MapMVCGrid()` serves the AJAX/export data endpoint at `{HandlerPath}`, `script.js` (with placeholder substitution), and the icon images — all from the core's shared `EmbeddedResources`.
+- [x] `@Html.MVCGrid("name")` / `(name, pageParameters)` `IHtmlHelper` extension → base-page HTML (RenderingEngine path only).
+- [x] Startup API: `builder.Services.AddMVCGrid(o => ...)` + `app.MapMVCGrid()`; grid definitions still register into the static `MVCGridDefinitionTable`.
+- [x] Core support: added `MVCGrid.Utility.EmbeddedResources` (shared asset accessor) and `InternalsVisibleTo("MVCGrid.AspNetCore")`; refactored the classic handler to use the shared accessor too.
+- [x] Verify (build): full `MSBuild MVCGrid.sln` → exit 0; all projects build together.
+- [x] **Runtime verify DONE:** scaffolded `MVCGrid.AspNetCoreExample` (net8 MVC web app; `Program.cs` with `AddMVCGrid`/`MapMVCGrid`, an in-memory `Person` grid, Bootstrap-3 layout, a `View` link column). Ran it headless (`dotnet run`) and curled the endpoints — confirmed: preloaded grid renders ("Showing 1 to 10 of 200", default Id-desc), AJAX sort (FirstName asc → "Dorothy" first), filter (FirstName=Jeffrey → 10 rows), paging (page 2 → "Showing 11 to 20"), `script.js` placeholder substitution, CSV export (Content-Type/Disposition + rows), images (image/png), and `UrlHelper.Action` in both the view and endpoint paths (`/Home/Detail/{id}` links). Browser click-through not done, but every server path is exercised.
 
 ## Phase 2 — Core adapter, Controller mode (deferred, D5)
 

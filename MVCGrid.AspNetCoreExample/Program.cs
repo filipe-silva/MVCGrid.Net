@@ -1,0 +1,21 @@
+using MVCGrid.AspNetCore;
+using MVCGrid.AspNetCoreExample.Grids;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddMVCGrid(o =>
+{
+    o.HandlerPath = "/mvcgrid";
+    o.ShowErrorDetails = true; // sample app: surface errors to the client
+});
+
+var app = builder.Build();
+
+// Grid definitions live in the shared static table (same as the classic host).
+GridConfig.RegisterGrids();
+
+app.MapMVCGrid();
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();

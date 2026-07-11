@@ -16,7 +16,9 @@ Both ship as NuGet packages. A consumer using classic MVC references `MVCGrid.Mv
 
 - **MVCGrid.Core/** — the portable library, **netstandard2.0**, ships as assembly/package **`MVCGrid`** (note: the folder is `MVCGrid.Core` but `AssemblyName` is `MVCGrid`). Contains all System.Web-free logic: models, `GridEngine` (model generation/auth/engine resolution), Bootstrap + CSV rendering engines, `SimpleTemplatingEngine`, the definition table and query-string parser — plus the framework-neutral abstractions in `MVCGrid.Abstractions`. Also holds the **embedded client assets** (`Scripts/MVCGrid.js`, `Images/*`) so every adapter serves identical assets. Zero NuGet dependencies. No test project exists.
 - **MVCGrid.MvcWeb/** — the **net48** ASP.NET MVC adapter (assembly `MVCGrid.MvcWeb`), references the core. Holds all the `System.Web`/`System.Web.Mvc` glue: `@Html.MVCGrid` (`HtmlExtensions`), `MVCGridController`, the `MVCGridHandler.axd` HTTP handler (which serves the core's embedded `MVCGrid.js` + images and does the `%%HANDLERPATH%%`/`%%CONTROLLERPATH%%`/`%%ERRORDETAILS%%` substitution), `GridRegistration`, `GridContextUtility`, `ConfigUtility`, the host-side render flow (`MvcGridHtmlRenderer`), and the adapter implementations of the core abstractions (`MvcGridAdapters.cs`).
+- **MVCGrid.AspNetCore/** — the **net8** ASP.NET Core MVC adapter (assembly `MVCGrid.AspNetCore`, `FrameworkReference Microsoft.AspNetCore.App`), references the core. Implements the core abstractions over ASP.NET Core (`IUrlHelper`, `HttpResponse`, `HttpRequest.Query`, `HttpContext.User`) and provides `services.AddMVCGrid()`, `app.MapMVCGrid()` (endpoint routing for the AJAX/export data endpoint + `script.js` + images), and the `@Html.MVCGrid(...)` helper. **RenderingEngine mode only** so far — Controller-mode view rendering and a TagHelper are deferred (see `MULTI-HOST-PLAN.md`). Compile-verified; runtime smoke-test still pending.
 - **MVCGridExample/** — a net48 MVC web app that is both the demo site and the de-facto integration test surface (assembly name `MVCGrid.Web`). Every feature has a demo grid registered in `App_Start/MVCGridConfig.cs` and a matching view under `Views/Demo/`.
+- **MVCGrid.AspNetCoreExample/** — a minimal **net8** ASP.NET Core MVC sample for the Core adapter (`Program.cs` with `AddMVCGrid`/`MapMVCGrid`, an in-memory `Person` grid, Bootstrap-3 layout). Unlike the classic example it builds and runs under the `dotnet` CLI: `dotnet run --project MVCGrid.AspNetCoreExample` — good for runtime-verifying the Core path.
 - **docs/** — a Jekyll site published to GitHub Pages (`https://filipe-silva.github.io/MVCGrid.Net`, `baseurl: /MVCGrid.Net`). Hand-written HTML, not generated from code. The `pages` branch is where docs/layout work happens. Links must be baseurl-aware (`{{ 'x.html' | relative_url }}`); grid sample images live in `docs/images/`.
 
 ## Build & run
@@ -35,7 +37,7 @@ dotnet build MVCGrid.MvcWeb/MVCGrid.MvcWeb.csproj
 msbuild MVCGrid.sln -t:Build -restore
 ```
 
-To verify a change, run **MVCGridExample** in IIS Express from Visual Studio and exercise the relevant demo grid (each feature = one grid in `MVCGridConfig.cs` + one page under `/Demo`). There are no automated tests; the example app is how behavior is checked. CSV/tab export exercises the `IGridResponse` path and column URL expressions exercise `IMvcGridUrlBuilder` — good things to smoke-test.
+To verify a change, run **MVCGridExample** in IIS Express from Visual Studio and exercise the relevant demo grid (each feature = one grid in `MVCGridConfig.cs` + one page under `/Demo`). There are no automated tests; the example app is how behavior is checked. CSV/tab export exercises the `IGridResponse` path and column URL expressions exercise `IMvcGridUrlBuilder` — good things to smoke-test. For the ASP.NET Core path, `dotnet run --project MVCGrid.AspNetCoreExample` (runs under the CLI, unlike the classic web app) and hit `/` — or curl `/`, `/mvcgrid?Name=peopleGrid`, `/mvcgrid/script.js`, `/mvcgrid?Name=peopleGrid&engine=export` to exercise render/data/script/export without a browser.
 
 ## The core/adapter split and its abstractions
 
@@ -86,7 +88,11 @@ Four things a host app must do — mirrored in MVCGridExample:
 3. Register grids at `Application_Start` (see `Global.asax.cs`): call your own `MVCGridConfig.RegisterGrids()` **and** `GridRegistration.RegisterAllGrids()`.
 4. Render in a view: `@Html.MVCGrid("GridName")`.
 
-Note: the NuGet packaging assets (`NuGetFiles/`, `MVCGrid.MvcWeb/MVCGrid.nuspec`, the old `.nuget/` folder) have **not** yet been updated for the two-package split — treat them as stale until reworked.
+### ASP.NET Core host
+
+Reference `MVCGrid.AspNetCore` and in `Program.cs`: `builder.Services.AddMVCGrid(o => { o.HandlerPath = "/mvcgrid"; });`, then `app.MapMVCGrid();`. Register grids into `MVCGridDefinitionTable` at startup (same as classic). In `_Layout`, include the script after jQuery: `<script src="/mvcgrid/script.js"></script>`. Render with `@Html.MVCGrid("GridName")` (`@using MVCGrid.AspNetCore`). RenderingEngine mode only for now.
+
+Note: the NuGet packaging assets (`NuGetFiles/`, `MVCGrid.MvcWeb/MVCGrid.nuspec`, the old `.nuget/` folder) have **not** yet been updated for the multi-package split — treat them as stale until reworked.
 
 ## Editing the example config
 

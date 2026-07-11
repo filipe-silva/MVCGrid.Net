@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>MVCGrid.AspNetCoreExample</RootNamespace>
+    <AssemblyName>MVCGrid.AspNetCoreExample</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MVCGrid.AspNetCore\MVCGrid.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>
