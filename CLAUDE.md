@@ -10,7 +10,7 @@ The library has been split into a **portable core + a framework adapter**:
 - **`MVCGrid`** — the core, targets **netstandard2.0**, free of any `System.Web` dependency. All the grid logic lives here.
 - **`MVCGrid.MvcWeb`** — the **.NET Framework 4.8** adapter that hosts the core inside classic ASP.NET MVC (`System.Web` / `System.Web.Mvc`, *not* ASP.NET Core).
 
-Both ship as NuGet packages. A consumer using classic MVC references `MVCGrid.MvcWeb` (which pulls in `MVCGrid`); the netstandard core exists so a different host (e.g. an ASP.NET Core adapter) could be built against it later.
+Both ship as NuGet packages. A consumer using classic MVC references `MVCGrid.MvcWeb` (which pulls in `MVCGrid`); the netstandard core exists so a different host can be built against it. A planned `MVCGrid.AspNetCore` adapter (ASP.NET Core MVC) is scoped in `MULTI-HOST-PLAN.md` at the repo root — not yet implemented.
 
 ## Projects (`MVCGrid.sln`)
 
@@ -21,7 +21,7 @@ Both ship as NuGet packages. A consumer using classic MVC references `MVCGrid.Mv
 
 ## Build & run
 
-SDK-style projects with **Central Package Management**: `Directory.Packages.props` at the repo root holds every package version (`<PackageVersion>`), and projects use version-less `<PackageReference>`. There is no CLI test runner or lint step.
+SDK-style projects with **Central Package Management**: `Directory.Packages.props` at the repo root holds every package version (`<PackageVersion>`), and projects use version-less `<PackageReference>`. Exception: `MVCGrid.MvcWeb` pins `Microsoft.AspNet.Mvc` via `VersionOverride="3.0.20105.1"` — it compiles against **MVC 3.0** so one adapter DLL works on ASP.NET MVC 3/4/5 (hosts bind up to their own version via `bindingRedirect`; the example runs it on 5.2.2). There is no CLI test runner or lint step.
 
 ```
 # The core (netstandard2.0) and the adapter (net48) build/restore with the dotnet CLI:

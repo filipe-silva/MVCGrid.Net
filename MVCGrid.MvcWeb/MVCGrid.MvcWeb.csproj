@@ -16,7 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.Mvc" />
+    <!-- Compile against MVC 3.0 so this single adapter DLL works on ASP.NET MVC 3/4/5
+         (hosts bind up to their own System.Web.Mvc version via bindingRedirect).
+         VersionOverride keeps the central CPM version (5.2.2, used by the example) intact. -->
+    <PackageReference Include="Microsoft.AspNet.Mvc" VersionOverride="3.0.20105.1" />
   </ItemGroup>
 
   <ItemGroup>
