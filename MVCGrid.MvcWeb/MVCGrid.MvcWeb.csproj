@@ -26,18 +26,4 @@
     <ProjectReference Include="..\MVCGrid.Core\MVCGrid.Core.csproj" />
   </ItemGroup>
 
-  <!-- Static assets served by MVCGridHandler are embedded into the assembly. -->
-  <ItemGroup>
-    <None Remove="Scripts\MVCGrid.js" />
-    <None Remove="Images\ajaxloader.gif" />
-    <None Remove="Images\sort.png" />
-    <None Remove="Images\sortdown.png" />
-    <None Remove="Images\sortup.png" />
-    <EmbeddedResource Include="Scripts\MVCGrid.js" />
-    <EmbeddedResource Include="Images\ajaxloader.gif" />
-    <EmbeddedResource Include="Images\sort.png" />
-    <EmbeddedResource Include="Images\sortdown.png" />
-    <EmbeddedResource Include="Images\sortup.png" />
-  </ItemGroup>
-
 </Project>

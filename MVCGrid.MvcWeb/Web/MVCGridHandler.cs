@@ -70,7 +70,7 @@ namespace MVCGrid.Web
 
         private static string GetTextResource(string fileSuffix)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = typeof(GridEngine).Assembly; // embedded JS/images live in the core (MVCGrid) assembly
 
             var s = assembly.GetManifestResourceNames();
 
@@ -95,7 +95,7 @@ namespace MVCGrid.Web
 
         private static byte[] GetBinaryResource(string fileSuffix)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = typeof(GridEngine).Assembly; // embedded JS/images live in the core (MVCGrid) assembly
 
             var s = assembly.GetManifestResourceNames();
 
@@ -201,6 +201,10 @@ namespace MVCGrid.Web
 
             IMVCGridRenderingEngine renderingEngine = GridEngine.GetRenderingEngine(gridContext);
 
+            // Classic-only response prep the portable IGridResponse no longer carries:
+            // clear anything buffered and stream output (matters for large CSV exports).
+            context.Response.Clear();
+            context.Response.BufferOutput = false;
             renderingEngine.PrepareResponse(new MvcGridResponse(context.Response));
             engine.Run(renderingEngine, gridContext, context.Response.Output);
         }

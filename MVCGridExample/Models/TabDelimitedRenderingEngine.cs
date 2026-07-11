@@ -17,10 +17,8 @@ namespace MVCGrid.Web.Models
 
         public void PrepareResponse(IGridResponse httpResponse)
         {
-            httpResponse.Clear();
             httpResponse.ContentType = "text/tab-separated-values";
             httpResponse.AddHeader("content-disposition", "attachment; filename=\"" + "export" + ".tsv\"");
-            httpResponse.BufferOutput = false;
         }
 
         public void Render(MVCGrid.Models.RenderingModel model, MVCGrid.Models.GridContext gridContext, System.IO.TextWriter outputStream)

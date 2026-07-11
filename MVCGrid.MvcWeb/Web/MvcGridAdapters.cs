@@ -57,17 +57,6 @@ namespace MVCGrid.Web
             set { _response.ContentType = value; }
         }
 
-        public bool BufferOutput
-        {
-            get { return _response.BufferOutput; }
-            set { _response.BufferOutput = value; }
-        }
-
-        public void Clear()
-        {
-            _response.Clear();
-        }
-
         public void AddHeader(string name, string value)
         {
             _response.AddHeader(name, value);

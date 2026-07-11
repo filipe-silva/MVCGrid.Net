@@ -24,10 +24,8 @@ namespace MVCGrid.Rendering
 
         public virtual void PrepareResponse(IGridResponse httpResponse)
         {
-            httpResponse.Clear();
             httpResponse.ContentType = "text/csv";
             httpResponse.AddHeader("content-disposition", "attachment; filename=\"" + GetFilename() + "\"");
-            httpResponse.BufferOutput = false;
         }
 
         public void Render(Models.RenderingModel model, Models.GridContext gridContext, TextWriter outputStream)
