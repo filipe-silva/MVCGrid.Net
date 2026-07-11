@@ -70,21 +70,21 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Antlr" Version="3.4.1.9004" />
-    <PackageReference Include="EntityFramework" Version="6.1.1" />
-    <PackageReference Include="FileHelpers" Version="2.0.0.0" />
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.2" />
-    <PackageReference Include="Microsoft.AspNet.Razor" Version="3.2.2" />
-    <PackageReference Include="Microsoft.AspNet.Web.Optimization" Version="1.1.3" />
-    <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.2" />
-    <PackageReference Include="Microsoft.Web.Infrastructure" Version="1.0.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="6.0.4" />
-    <PackageReference Include="Ninject" Version="3.2.0.0" />
-    <PackageReference Include="Ninject.MVC5" Version="3.2.1.0" />
-    <PackageReference Include="Ninject.Web.Common" Version="3.2.0.0" />
-    <PackageReference Include="Ninject.Web.Common.WebHost" Version="3.2.0.0" />
-    <PackageReference Include="WebActivatorEx" Version="2.0" />
-    <PackageReference Include="WebGrease" Version="1.5.2" />
+    <PackageReference Include="Antlr" />
+    <PackageReference Include="EntityFramework" />
+    <PackageReference Include="FileHelpers" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" />
+    <PackageReference Include="Microsoft.AspNet.Razor" />
+    <PackageReference Include="Microsoft.AspNet.Web.Optimization" />
+    <PackageReference Include="Microsoft.AspNet.WebPages" />
+    <PackageReference Include="Microsoft.Web.Infrastructure" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Ninject" />
+    <PackageReference Include="Ninject.MVC5" />
+    <PackageReference Include="Ninject.Web.Common" />
+    <PackageReference Include="Ninject.Web.Common.WebHost" />
+    <PackageReference Include="WebActivatorEx" />
+    <PackageReference Include="WebGrease" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
