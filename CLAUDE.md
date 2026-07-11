@@ -100,7 +100,9 @@ The three libraries ship as packages via **SDK-style `dotnet pack`** (no hand-wr
 - `MVCGrid.MvcWeb` → **`MVCGrid.MvcWeb`** (net48; deps on `MVCGrid` + `Microsoft.AspNet.Mvc 3.0.20105.1`, both auto-emitted from the ProjectReference/PackageReference).
 - `MVCGrid.AspNetCore` → **`MVCGrid.AspNetCore`** (net8; dep on `MVCGrid`, framework-ref `Microsoft.AspNetCore.App`).
 
-The two sample apps under `tst/` set `<IsPackable>false</IsPackable>`. Pack each library with the `dotnet` CLI, e.g. `dotnet pack src/MVCGrid.Core/MVCGrid.Core.csproj -c Release -o <out>` (produces `.nupkg` + `.snupkg`). The old content-file install model (`NuGetFiles/`, the `.pp` transforms, `Install.ps1`, `MVCGrid.MvcWeb/MVCGrid.nuspec`) has been removed — consumers do the manual host setup documented above. The legacy `.nuget/` folder (`NuGet.exe`/`NuGet.targets`) is unused and can be deleted.
+The two sample apps under `tst/` set `<IsPackable>false</IsPackable>`. Pack each library with the `dotnet` CLI, e.g. `dotnet pack src/MVCGrid.Core/MVCGrid.Core.csproj -c Release -o <out>` (produces `.nupkg` + `.snupkg`). The old content-file install model (`NuGetFiles/`, the `.pp` transforms, `Install.ps1`, `MVCGrid.MvcWeb/MVCGrid.nuspec`) and the legacy `.nuget/` folder have been removed — consumers do the manual host setup documented above.
+
+**Publishing** is automated by `.github/workflows/publish.yml` (runs on `windows-latest` since net48 needs the .NET Framework targeting pack). Push a `v*.*.*` tag (the tag drives the package version, overriding `Directory.Build.props`) to pack all three and push `.nupkg`+`.snupkg` to nuget.org, or run it manually (`workflow_dispatch`) with an optional version override and a `dry_run` toggle to pack without pushing. Requires the repo secret **`NUGET_API_KEY`**.
 
 ## Editing the example config
 
