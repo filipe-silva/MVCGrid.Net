@@ -64,37 +64,37 @@ title: MVCGrid.Net
 </div>
 
 
-        <div id="MVCGridContainer_TestGrid" class="MVCGridContainer"><input type="hidden" name="MVCGridName" value="TestGrid"><div id="MVCGrid_TestGrid_JsonData" style="display: none">{"name": "TestGrid","qsPrefix": "","preloaded": true,"clientLoading": "","clientLoadingComplete": "","renderingMode": "renderingengine","pageParameters": {}}</div><div id="MVCGrid_ErrorMessage_TestGrid" style="display: none;"><div class="alert alert-warning" role="alert">There was a problem loading the grid.</div></div><div id="MVCGrid_Loading_TestGrid" class="text-center" style="visibility: hidden">&nbsp;&nbsp;&nbsp;<img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/ajaxloader.gif" alt="Processing" style="width: 15px; height: 15px;">&nbsp;Processing...</div><div id="MVCGridTableHolder_TestGrid"><table id="MVCGridTable_TestGrid" class="table table-striped table-bordered"><thead>
+        <div id="MVCGridContainer_TestGrid" class="MVCGridContainer"><input type="hidden" name="MVCGridName" value="TestGrid"><div id="MVCGrid_TestGrid_JsonData" style="display: none">{"name": "TestGrid","qsPrefix": "","preloaded": true,"clientLoading": "","clientLoadingComplete": "","renderingMode": "renderingengine","pageParameters": {}}</div><div id="MVCGrid_ErrorMessage_TestGrid" style="display: none;"><div class="alert alert-warning" role="alert">There was a problem loading the grid.</div></div><div id="MVCGrid_Loading_TestGrid" class="text-center" style="visibility: hidden">&nbsp;&nbsp;&nbsp;<img src="{{ '/images/ajaxloader.gif' | relative_url }}" alt="Processing" style="width: 15px; height: 15px;">&nbsp;Processing...</div><div id="MVCGridTableHolder_TestGrid"><table id="MVCGridTable_TestGrid" class="table table-striped table-bordered"><thead>
   <tr>
-<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;Id&quot;, &quot;Asc&quot;); return false;">Id <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sortdown.png" class="pull-right"></th>
-<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;FirstName&quot;, &quot;Asc&quot;); return false;">First Name <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sort.png" class="pull-right"></th>
-<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;LastName&quot;, &quot;Asc&quot;); return false;">Last Name <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sort.png" class="pull-right"></th>
-<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;StartDate&quot;, &quot;Asc&quot;); return false;">Start Date <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sort.png" class="pull-right"></th>
-<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;Status&quot;, &quot;Asc&quot;); return false;">Status <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sort.png" class="pull-right"></th>
-<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;Gender&quot;, &quot;Asc&quot;); return false;">Gender <img src="/web/20220205090815im_/http://mvcgrid.net/MVCGridHandler.axd/sort.png" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;Id&quot;, &quot;Asc&quot;); return false;">Id <img src="{{ '/images/sortdown.png' | relative_url }}" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;FirstName&quot;, &quot;Asc&quot;); return false;">First Name <img src="{{ '/images/sort.png' | relative_url }}" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;LastName&quot;, &quot;Asc&quot;); return false;">Last Name <img src="{{ '/images/sort.png' | relative_url }}" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;StartDate&quot;, &quot;Asc&quot;); return false;">Start Date <img src="{{ '/images/sort.png' | relative_url }}" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;Status&quot;, &quot;Asc&quot;); return false;">Status <img src="{{ '/images/sort.png' | relative_url }}" class="pull-right"></th>
+<th style="cursor: pointer;" onclick="MVCGrid.setSort(&quot;TestGrid&quot;, &quot;Gender&quot;, &quot;Asc&quot;); return false;">Gender <img src="{{ '/images/sort.png' | relative_url }}" class="pull-right"></th>
   </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/1000">1000</a></td><td>Patricia</td><td>Jacobs</td><td>10/19/2013</td><td class="success">Active</td><td>Female</td>  </tr>
+<td><a href="#">1000</a></td><td>Patricia</td><td>Jacobs</td><td>10/19/2013</td><td class="success">Active</td><td>Female</td>  </tr>
 <tr>
-<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/999">999</a></td><td>Jeffrey</td><td>Shaw</td><td>9/25/2012</td><td class="success">Active</td><td>Male</td>  </tr>
+<td><a href="#">999</a></td><td>Jeffrey</td><td>Shaw</td><td>9/25/2012</td><td class="success">Active</td><td>Male</td>  </tr>
 <tr>
-<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/998">998</a></td><td>Dorothy</td><td>Nguyen</td><td>11/21/2014</td><td class="danger">Inactive</td><td>Female</td>  </tr>
+<td><a href="#">998</a></td><td>Dorothy</td><td>Nguyen</td><td>11/21/2014</td><td class="danger">Inactive</td><td>Female</td>  </tr>
 <tr>
-<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/997">997</a></td><td>Kathryn</td><td>Cruz</td><td>7/29/2014</td><td class="danger">Inactive</td><td>Female</td>  </tr>
+<td><a href="#">997</a></td><td>Kathryn</td><td>Cruz</td><td>7/29/2014</td><td class="danger">Inactive</td><td>Female</td>  </tr>
 <tr>
-<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/996">996</a></td><td>Evelyn</td><td>Jacobs</td><td>10/16/2012</td><td class="danger">Inactive</td><td>Female</td>  </tr>
+<td><a href="#">996</a></td><td>Evelyn</td><td>Jacobs</td><td>10/16/2012</td><td class="danger">Inactive</td><td>Female</td>  </tr>
 <tr>
-<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/995">995</a></td><td>Michael</td><td>Wilson</td><td>2/9/2013</td><td class="danger">Inactive</td><td>Male</td>  </tr>
+<td><a href="#">995</a></td><td>Michael</td><td>Wilson</td><td>2/9/2013</td><td class="danger">Inactive</td><td>Male</td>  </tr>
 <tr>
-<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/994">994</a></td><td>Nancy</td><td>Collins</td><td>3/31/2013</td><td class="danger">Inactive</td><td>Female</td>  </tr>
+<td><a href="#">994</a></td><td>Nancy</td><td>Collins</td><td>3/31/2013</td><td class="danger">Inactive</td><td>Female</td>  </tr>
 <tr>
-<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/993">993</a></td><td>Joyce</td><td>Crawford</td><td>10/24/2013</td><td class="success">Active</td><td>Female</td>  </tr>
+<td><a href="#">993</a></td><td>Joyce</td><td>Crawford</td><td>10/24/2013</td><td class="success">Active</td><td>Female</td>  </tr>
 <tr>
-<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/992">992</a></td><td>Martin</td><td>Frazier</td><td>6/29/2014</td><td class="danger">Inactive</td><td>Male</td>  </tr>
+<td><a href="#">992</a></td><td>Martin</td><td>Frazier</td><td>6/29/2014</td><td class="danger">Inactive</td><td>Male</td>  </tr>
 <tr>
-<td><a href="/web/20220205090815/http://mvcgrid.net/demo/detail/991">991</a></td><td>Lois</td><td>Snyder</td><td>4/13/2013</td><td class="danger">Inactive</td><td>Female</td>  </tr>
+<td><a href="#">991</a></td><td>Lois</td><td>Snyder</td><td>4/13/2013</td><td class="danger">Inactive</td><td>Female</td>  </tr>
 </tbody>
 </table>
 <div class="row"><div class="col-xs-6">Showing 1 to 10 of 1000 entries</div><div class="col-xs-6"><ul class="pagination pull-right" style="margin-top: 0;"><li class="disabled"><a href="#" aria-label="Previous" onclick="return false;"><span aria-hidden="true">« Previous</span></a></li><li class="active"><a href="#" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 1); return false;">1</a></li><li><a href="#" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 2); return false;">2</a></li><li><a href="#" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 3); return false;">3</a></li><li><a href="#" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 4); return false;">4</a></li><li><a href="#" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 5); return false;">5</a></li><li><a href="#" aria-label="Next" onclick="MVCGrid.setPage(&quot;TestGrid&quot;, 2); return false;"><span aria-hidden="true">Next »</span></a></li></ul></div></div><div id="MVCGrid_TestGrid_ContextJsonData" style="display: none;">{"name": "TestGrid","sortColumn": "Id","sortDirection": "Dsc","itemsPerPage": 10,"pageNumber": 1,"columnVisibility": {"Id": {"headerText": "Id","visible": true,"allow": false},"FirstName": {"headerText": "First Name","visible": true,"allow": true},"LastName": {"headerText": "Last Name","visible": true,"allow": true},"FullName": {"headerText": "Full Name","visible": false,"allow": true},"StartDate": {"headerText": "Start Date","visible": true,"allow": true},"Status": {"headerText": "Status","visible": true,"allow": true},"Gender": {"headerText": "Gender","visible": true,"allow": true},"Email": {"headerText": "Email","visible": false,"allow": true},"Url": {"headerText": "Url","visible": false,"allow": false}},"filters": {},"additionalQueryOptions": {"search": ""}}</div></div></div>
