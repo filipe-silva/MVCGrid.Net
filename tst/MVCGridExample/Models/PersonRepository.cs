@@ -30,13 +30,16 @@ namespace MVCGrid.Web.Models
             {
                 var query = db.People.AsQueryable();
 
+                // Case-insensitive Contains: LINQ-to-objects string.Contains is ordinal/case-sensitive
+                // (SQL Server filtering was case-insensitive), and net48 lacks the
+                // string.Contains(string, StringComparison) overload — so use IndexOf.
                 if (!String.IsNullOrWhiteSpace(filterFirstName))
                 {
-                    query = query.Where(p => p.FirstName.Contains(filterFirstName));
+                    query = query.Where(p => p.FirstName.IndexOf(filterFirstName, StringComparison.OrdinalIgnoreCase) >= 0);
                 }
                 if (!String.IsNullOrWhiteSpace(filterLastName))
                 {
-                    query = query.Where(p => p.LastName.Contains(filterLastName));
+                    query = query.Where(p => p.LastName.IndexOf(filterLastName, StringComparison.OrdinalIgnoreCase) >= 0);
                 }
                 if (filterActive.HasValue)
                 {
@@ -45,7 +48,7 @@ namespace MVCGrid.Web.Models
 
                 if (!String.IsNullOrWhiteSpace(globalSearch))
                 {
-                    query = query.Where(p => (p.FirstName + " " + p.LastName).Contains(globalSearch));
+                    query = query.Where(p => (p.FirstName + " " + p.LastName).IndexOf(globalSearch, StringComparison.OrdinalIgnoreCase) >= 0);
                 }
 
                 totalRecords = query.Count();

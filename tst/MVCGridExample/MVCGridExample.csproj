@@ -54,7 +54,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.Extensions" />
@@ -71,7 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Antlr" />
-    <PackageReference Include="EntityFramework" />
     <PackageReference Include="FileHelpers" />
     <PackageReference Include="Microsoft.AspNet.Mvc" />
     <PackageReference Include="Microsoft.AspNet.Razor" />
@@ -100,24 +98,8 @@
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Data\Person.cs">
-      <DependentUpon>SampleDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\SampleDB.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SampleDB.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\SampleDB.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SampleDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\SampleDB.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SampleDB.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Data\Person.cs" />
+    <Compile Include="Data\SampleDatabaseEntities.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -136,10 +118,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\SampleDatabase.mdf" />
-    <Content Include="App_Data\SampleDatabase_log.ldf">
-      <DependentUpon>SampleDatabase.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -157,23 +135,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Data\SampleDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SampleDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Data\SampleDB.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SampleDB.Context.cs</LastGenOutput>
-      <DependentUpon>SampleDB.edmx</DependentUpon>
-    </Content>
-    <Content Include="Data\SampleDB.edmx.diagram">
-      <DependentUpon>SampleDB.edmx</DependentUpon>
-    </Content>
-    <Content Include="Data\SampleDB.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SampleDB.edmx</DependentUpon>
-      <LastGenOutput>SampleDB.cs</LastGenOutput>
-    </Content>
     <Content Include="App_Data\documentation.csv" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
