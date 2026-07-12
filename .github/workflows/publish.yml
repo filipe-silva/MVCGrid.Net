@@ -1,13 +1,17 @@
 name: Publish NuGet packages
 
 # Packs the three libraries (MVCGrid, MVCGrid.MvcWeb, MVCGrid.AspNetCore) and
-# pushes .nupkg + .snupkg to nuget.org.
+# pushes .nupkg + .snupkg to nuget.org using Trusted Publishing (OIDC) — no
+# long-lived API key is stored. The NuGet/login action exchanges a short-lived
+# GitHub OIDC token for a temporary (1-hour) nuget.org API key just before push.
 #
 # Triggers:
 #   - Push a version tag  v*.*.*  -> version is taken from the tag, packages are pushed.
 #   - Manual "Run workflow"       -> optional version override; tick dry_run to pack only.
 #
-# Requires the repo secret NUGET_API_KEY (an api.nuget.org push key).
+# One-time setup:
+#   1. On nuget.org: Account -> Trusted Publishing -> add a policy for this repo
+#   2. Add the repo secret NUGET_USER = your nuget.org username (profile name, NOT email).
 
 on:
   push:
@@ -24,13 +28,13 @@ on:
         type: boolean
         default: false
 
-permissions:
-  contents: read
-
 jobs:
   publish:
     # net48 (MVCGrid.MvcWeb) needs the .NET Framework targeting pack, so build on Windows.
     runs-on: windows-latest
+    permissions:
+      contents: read
+      id-token: write   # required for Trusted Publishing (GitHub OIDC token issuance)
 
     steps:
       - name: Checkout
@@ -78,18 +82,21 @@ jobs:
             artifacts/*.nupkg
             artifacts/*.snupkg
 
+      # --- Push path (skipped on a manual dry run) ---
+
+      - name: NuGet login (OIDC -> temporary API key)
+        if: github.event_name == 'push' || github.event.inputs.dry_run == 'false'
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Push to nuget.org
         if: github.event_name == 'push' || github.event.inputs.dry_run == 'false'
         shell: bash
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
-          if [ -z "$NUGET_API_KEY" ]; then
-            echo "::error::NUGET_API_KEY secret is not set."
-            exit 1
-          fi
           # Pushes each .nupkg; the matching .snupkg is uploaded automatically.
           dotnet nuget push "artifacts/*.nupkg" \
-            --api-key "$NUGET_API_KEY" \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
