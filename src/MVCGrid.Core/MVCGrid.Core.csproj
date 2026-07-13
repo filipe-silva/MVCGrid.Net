@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ProjectGuid>{C0FFEE00-1111-2222-3333-444455556677}</ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <!-- The portable core takes the primary package/assembly name 'MVCGrid'.
+         The net48 adapter will ship as 'MVCGrid.Mvc5'. Namespaces stay MVCGrid.*. -->
+    <RootNamespace>MVCGrid</RootNamespace>
+    <AssemblyName>MVCGrid</AssemblyName>
+    <LangVersion>7.3</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Docs inherited from the original library have some malformed XML; don't fail the build on it. -->
+    <NoWarn>$(NoWarn);1591;1570;1587;1573</NoWarn>
+
+    <!-- NuGet: the portable core ships as package 'MVCGrid' (shared metadata in Directory.Build.props). -->
+    <PackageId>MVCGrid</PackageId>
+    <Title>MVCGrid.Net (core)</Title>
+    <Description>Portable netstandard2.0 core of MVCGrid.Net — a server-side data grid with AJAX paging, sorting, filtering, column visibility and CSV export. System.Web-free; consumed by a host adapter (MVCGrid.MvcWeb for classic ASP.NET MVC, MVCGrid.AspNetCore for ASP.NET Core).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <!-- Client script + sort/loader icons, served by a host adapter (e.g. MVCGridHandler.axd
+       in MVCGrid.MvcWeb, or the Core endpoint). Embedded here so every adapter shares them. -->
+  <ItemGroup>
+    <None Remove="Scripts\MVCGrid.js" />
+    <None Remove="Images\ajaxloader.gif" />
+    <None Remove="Images\sort.png" />
+    <None Remove="Images\sortdown.png" />
+    <None Remove="Images\sortup.png" />
+    <EmbeddedResource Include="Scripts\MVCGrid.js" />
+    <EmbeddedResource Include="Images\ajaxloader.gif" />
+    <EmbeddedResource Include="Images\sort.png" />
+    <EmbeddedResource Include="Images\sortdown.png" />
+    <EmbeddedResource Include="Images\sortup.png" />
+  </ItemGroup>
+
+</Project>

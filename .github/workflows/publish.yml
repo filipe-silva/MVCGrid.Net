@@ -1,0 +1,102 @@
+name: Publish NuGet packages
+
+# Packs the three libraries (MVCGrid, MVCGrid.MvcWeb, MVCGrid.AspNetCore) and
+# pushes .nupkg + .snupkg to nuget.org using Trusted Publishing (OIDC) — no
+# long-lived API key is stored. The NuGet/login action exchanges a short-lived
+# GitHub OIDC token for a temporary (1-hour) nuget.org API key just before push.
+#
+# Triggers:
+#   - Push a version tag  v*.*.*  -> version is taken from the tag, packages are pushed.
+#   - Manual "Run workflow"       -> optional version override; tick dry_run to pack only.
+#
+# One-time setup:
+#   1. On nuget.org: Account -> Trusted Publishing -> add a policy for this repo
+#   2. Add the repo secret NUGET_USER = your nuget.org username (profile name, NOT email).
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version override (e.g. 3.0.1). Blank = use the version committed in Directory.Build.props.'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Pack only, do not push to nuget.org'
+        type: boolean
+        default: false
+
+jobs:
+  publish:
+    # net48 (MVCGrid.MvcWeb) needs the .NET Framework targeting pack, so build on Windows.
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      id-token: write   # required for Trusted Publishing (GitHub OIDC token issuance)
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Determine version
+        id: ver
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            V="${GITHUB_REF_NAME#v}"
+          else
+            V="${{ github.event.inputs.version }}"
+          fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          [ -n "$V" ] && echo "Version override: $V" || echo "Using version from Directory.Build.props"
+
+      - name: Pack
+        shell: bash
+        run: |
+          set -e
+          VERSION_ARG=""
+          if [ -n "${{ steps.ver.outputs.version }}" ]; then
+            VERSION_ARG="-p:Version=${{ steps.ver.outputs.version }}"
+          fi
+          for proj in \
+            src/MVCGrid.Core/MVCGrid.Core.csproj \
+            src/MVCGrid.MvcWeb/MVCGrid.MvcWeb.csproj \
+            src/MVCGrid.AspNetCore/MVCGrid.AspNetCore.csproj; do
+            echo "::group::pack $proj"
+            dotnet pack "$proj" -c Release -o artifacts --nologo $VERSION_ARG
+            echo "::endgroup::"
+          done
+
+      - name: Upload packages as build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: |
+            artifacts/*.nupkg
+            artifacts/*.snupkg
+
+      # --- Push path (skipped on a manual dry run) ---
+
+      - name: NuGet login (OIDC -> temporary API key)
+        if: github.event_name == 'push' || github.event.inputs.dry_run == 'false'
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push to nuget.org
+        if: github.event_name == 'push' || github.event.inputs.dry_run == 'false'
+        shell: bash
+        run: |
+          # Pushes each .nupkg; the matching .snupkg is uploaded automatically.
+          dotnet nuget push "artifacts/*.nupkg" \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate

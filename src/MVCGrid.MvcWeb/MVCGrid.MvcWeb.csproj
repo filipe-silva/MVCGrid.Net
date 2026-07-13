@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>MVCGrid.MvcWeb</AssemblyName>
+    <!-- Namespaces stay MVCGrid.* (matches embedded-resource logical names the handler looks up). -->
+    <RootNamespace>MVCGrid</RootNamespace>
+    <!-- Keep the existing hand-written Properties/AssemblyInfo.cs rather than an SDK-generated one. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+    <!-- NuGet: classic ASP.NET MVC adapter. Depends on MVCGrid (core) via ProjectReference,
+         and on Microsoft.AspNet.Mvc 3.0 — both emitted as package dependencies by pack. -->
+    <PackageId>MVCGrid.MvcWeb</PackageId>
+    <Title>MVCGrid.Net for classic ASP.NET MVC</Title>
+    <Description>Classic ASP.NET MVC 3/4/5 host adapter for MVCGrid.Net. Provides @Html.MVCGrid, the MVCGridHandler.axd endpoint (serving the embedded client script + icons), grid registration and the System.Web glue over the portable MVCGrid core.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Compile against MVC 3.0 so this single adapter DLL works on ASP.NET MVC 3/4/5
+         (hosts bind up to their own System.Web.Mvc version via bindingRedirect).
+         VersionOverride keeps the central CPM version (5.2.2, used by the example) intact. -->
+    <PackageReference Include="Microsoft.AspNet.Mvc" VersionOverride="3.0.20105.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MVCGrid.Core\MVCGrid.Core.csproj" />
+  </ItemGroup>
+
+</Project>

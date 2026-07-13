@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ProjectGuid>{A5DC0DE0-1111-2222-3333-444455556699}</ProjectGuid>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>MVCGrid.AspNetCore</AssemblyName>
+    <RootNamespace>MVCGrid.AspNetCore</RootNamespace>
+
+    <!-- NuGet: ASP.NET Core host adapter. Depends on MVCGrid (core) via ProjectReference
+         (emitted by pack); the ASP.NET Core surface comes from the shared framework. -->
+    <PackageId>MVCGrid.AspNetCore</PackageId>
+    <Title>MVCGrid.Net for ASP.NET Core</Title>
+    <Description>ASP.NET Core (net8) host adapter for MVCGrid.Net. Provides services.AddMVCGrid(), app.MapMVCGrid() (data/export endpoint + client script + icons via endpoint routing) and the @Html.MVCGrid helper over the portable MVCGrid core. RenderingEngine mode.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MVCGrid.Core\MVCGrid.Core.csproj" />
+  </ItemGroup>
+
+</Project>
