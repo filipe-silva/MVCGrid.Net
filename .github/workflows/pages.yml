@@ -47,11 +47,17 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Build Jekyll docs
-        uses: actions/jekyll-build-pages@v1
+      # Build Jekyll natively (not actions/jekyll-build-pages, which runs in a container
+      # and writes _site as root — the copy step below then can't write into it).
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          source: ./docs
-          destination: ./_site
+          ruby-version: '3.3'
+
+      - name: Build Jekyll docs
+        run: |
+          gem install jekyll
+          jekyll build --source docs --destination _site
 
       - name: Add the demo to the site under /demo
         run: |
