@@ -13,10 +13,22 @@ Goal: one library usable from **ASP.NET Core MVC** and **classic ASP.NET MVC 3/4
 ## Target package layout
 
 ```
-MVCGrid              (netstandard2.0)   core — shared by both adapters
+MVCGrid              (netstandard2.0)   core — shared by all adapters
  ├─ MVCGrid.MvcWeb       (net48)         classic ASP.NET MVC 3/4/5 adapter  [exists]
- └─ MVCGrid.AspNetCore   (net8)          ASP.NET Core MVC adapter           [to build]
+ ├─ MVCGrid.AspNetCore   (net8)          ASP.NET Core MVC adapter           [exists]
+ └─ MVCGrid.Wasm         (netstandard2.0) browser/WebAssembly host adapter  [exists, not packaged]
 ```
+
+## Browser / WebAssembly host (done)
+
+A third host proves the core is truly framework-neutral: **`MVCGrid.Wasm`** runs the unchanged
+`GridEngine` in the browser (no server), and **`MVCGrid.WasmExample`** is a `Microsoft.NET.Sdk.WebAssembly`
+app that serves the demo grid as static files. It reuses the ASP.NET Core sample's grid/data verbatim and
+the unchanged `MVCGrid.js`, intercepting the script's single AJAX call with a jQuery `ajaxTransport` that
+calls into WASM (`[JSExport]`). Verified end-to-end in headless Chrome (render/sort/page/filter/export/detail,
+no network calls to the handler), at both the site root and a `/demo/` sub-path. `PublishTrimmed=false` is
+required (engines are activated by string type name). Deployed to GitHub Pages beside the docs at `/demo`
+via `.github/workflows/pages.yml`. Not published as a NuGet package (yet).
 
 ## Decisions
 

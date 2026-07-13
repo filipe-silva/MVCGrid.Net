@@ -1,0 +1,75 @@
+name: Deploy GitHub Pages (docs + live WASM demo)
+
+# Builds the Jekyll docs site AND the .NET WebAssembly demo, then deploys both as a
+# single static artifact:
+#   - docs   -> the site root (https://filipe-silva.github.io/MVCGrid.Net/)
+#   - demo   -> /demo (the interactive MVCGrid grid, running fully in the browser)
+#
+# The demo's _framework/ folder would be ignored by Pages' built-in Jekyll (underscore
+# prefix), so we build Jekyll ourselves and copy the demo in AFTER — the uploaded
+# artifact is served verbatim, no server-side Jekyll pass.
+#
+# One-time setup: repo Settings -> Pages -> Source = "GitHub Actions".
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; don't cancel an in-progress run.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install wasm-tools workload
+        run: dotnet workload install wasm-tools
+
+      - name: Publish the WASM demo
+        run: dotnet publish tst/MVCGrid.WasmExample/MVCGrid.WasmExample.csproj -c Release -o wasmpub
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build Jekyll docs
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./docs
+          destination: ./_site
+
+      - name: Add the demo to the site under /demo
+        run: |
+          mkdir -p _site/demo
+          cp -r wasmpub/wwwroot/. _site/demo/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
