@@ -64,7 +64,6 @@ namespace MVCGrid.Templating
                         }
                         inside = false;
                         string name = sbItem.ToString();
-                        Console.WriteLine(name);
 
                         sbItem.Clear();
 

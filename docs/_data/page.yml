@@ -5,6 +5,8 @@ nav:
     url: /gettingstarted.html
   - title: Demos
     url: /demo.html
+    # NB: the rendered nav lives in _layouts/default.html; this _data file and
+    # _includes/navigation.html are unused legacy kept for reference.
   - title: Documentation
     url: /documentation.html
   - title: Download
