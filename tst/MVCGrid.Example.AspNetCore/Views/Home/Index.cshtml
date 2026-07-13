@@ -1,0 +1,42 @@
+@{
+    ViewBag.Title = "People";
+}
+
+<h1>People</h1>
+<p class="text-muted">
+    MVCGrid running on ASP.NET Core (net8) via <code>MVCGrid.AspNetCore</code>, using the shared
+    grid catalog in <code>MVCGrid.Example.Common</code> (the same grids the classic and WASM hosts use).
+</p>
+
+<div class="row" style="margin-bottom: 10px;">
+    <div class="col-md-7 form-inline">
+        <div class="form-group">
+            <label>First name:
+                <input type="text" class="form-control" placeholder="filter"
+                       data-mvcgrid-type="filter" data-mvcgrid-option="FirstName"
+                       data-mvcgrid-name="Filtering" data-mvcgrid-apply-filter="keyup" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Last name:
+                <input type="text" class="form-control" placeholder="filter"
+                       data-mvcgrid-type="filter" data-mvcgrid-option="LastName"
+                       data-mvcgrid-name="Filtering" data-mvcgrid-apply-filter="keyup" />
+            </label>
+        </div>
+    </div>
+    <div class="col-md-5 text-right form-inline">
+        <label>Page size:
+            <select class="form-control" data-mvcgrid-type="pageSize" data-mvcgrid-name="Filtering">
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+            </select>
+        </label>
+        <button class="btn btn-default" data-mvcgrid-type="export" data-mvcgrid-name="Filtering">
+            Export CSV
+        </button>
+    </div>
+</div>
+
+@Html.MVCGrid("Filtering")

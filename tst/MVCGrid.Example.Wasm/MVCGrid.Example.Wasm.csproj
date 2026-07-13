@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <OutputType>Exe</OutputType>
+    <WasmMainJSPath>main.js</WasmMainJSPath>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>MVCGrid.Example.Wasm</RootNamespace>
+    <AssemblyName>MVCGrid.Example.Wasm</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <!-- The [JSExport] methods only ever run in the browser; silence the cross-platform warning. -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+
+    <!-- REQUIRED: MVCGrid instantiates its rendering engines by string type name
+         (Type.GetType + Activator, see GridDefaults.cs), which IL trimming would
+         strip. Keep trimming off so the Bootstrap/CSV engines survive in the browser. -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <!-- Keep the ICU data out (smaller download); dates render with invariant culture. -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MVCGrid.Wasm\MVCGrid.Wasm.csproj" />
+    <ProjectReference Include="..\MVCGrid.Example.Common\MVCGrid.Example.Common.csproj" />
+  </ItemGroup>
+
+  <!-- Embed the shared grid source so the showcase can display each grid's config code. -->
+  <ItemGroup>
+    <EmbeddedResource Include="..\MVCGrid.Example.Common\SampleGrids.cs">
+      <LogicalName>SampleGrids.cs.txt</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

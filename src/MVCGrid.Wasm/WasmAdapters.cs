@@ -8,10 +8,10 @@ using MVCGrid.Abstractions;
 namespace MVCGrid.Wasm
 {
     /// <summary>
-    /// Implements the core's IMvcGridUrlBuilder for a static site. There is no MVC
-    /// routing in the browser, so Action(...) maps to a static page + query string,
-    /// e.g. Action("Detail","Home", new { id = 5 }) => "detail.html?id=5" (relative,
-    /// so it resolves under any deployment sub-path).
+    /// Implements the core's IMvcGridUrlBuilder for a browser SPA. There is no MVC
+    /// routing, so Action(...) maps to a client hash route + query string,
+    /// e.g. Action("detail","demo", new { id = 5 }) => "#/detail?id=5". The single-page
+    /// app's hash router handles it, so links never trigger a WASM runtime reboot.
     /// </summary>
     public sealed class WasmUrlBuilder : IMvcGridUrlBuilder
     {
@@ -37,7 +37,7 @@ namespace MVCGrid.Wasm
 
         private static string Build(string actionName, object routeValues)
         {
-            string page = (actionName ?? "").ToLowerInvariant() + ".html";
+            string page = "#/" + (actionName ?? "").ToLowerInvariant();
             if (routeValues == null)
             {
                 return page;
