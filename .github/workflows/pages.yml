@@ -1,13 +1,8 @@
-name: Deploy GitHub Pages (docs + live WASM demo)
+name: Deploy GitHub Pages (WASM showcase)
 
-# Builds the Jekyll docs site AND the .NET WebAssembly demo, then deploys both as a
-# single static artifact:
-#   - docs   -> the site root (https://filipe-silva.github.io/MVCGrid.Net/)
-#   - demo   -> /demo (the interactive MVCGrid grid, running fully in the browser)
-#
-# The demo's _framework/ folder would be ignored by Pages' built-in Jekyll (underscore
-# prefix), so we build Jekyll ourselves and copy the demo in AFTER — the uploaded
-# artifact is served verbatim, no server-side Jekyll pass.
+# Publishes the .NET WebAssembly showcase (MVCGrid.Example.Wasm) and deploys it as the
+# whole GitHub Pages site (root: https://filipe-silva.github.io/MVCGrid.Net/). It is both
+# the interactive demo and the docs — there is no separate Jekyll site.
 #
 # One-time setup: repo Settings -> Pages -> Source = "GitHub Actions".
 
@@ -21,7 +16,6 @@ permissions:
   pages: write
   id-token: write
 
-# Allow one concurrent deployment; don't cancel an in-progress run.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -41,33 +35,13 @@ jobs:
       - name: Install wasm-tools workload
         run: dotnet workload install wasm-tools
 
-      - name: Publish the WASM demo
-        run: dotnet publish tst/MVCGrid.WasmExample/MVCGrid.WasmExample.csproj -c Release -o wasmpub
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      # Build Jekyll natively (not actions/jekyll-build-pages, which runs in a container
-      # and writes _site as root — the copy step below then can't write into it).
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3'
-
-      - name: Build Jekyll docs
-        run: |
-          gem install jekyll
-          jekyll build --source docs --destination _site
-
-      - name: Add the demo to the site under /demo
-        run: |
-          mkdir -p _site/demo
-          cp -r wasmpub/wwwroot/. _site/demo/
+      - name: Publish the WASM app
+        run: dotnet publish tst/MVCGrid.Example.Wasm/MVCGrid.Example.Wasm.csproj -c Release -o wasmpub
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: wasmpub/wwwroot
 
   deploy:
     needs: build

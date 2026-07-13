@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MVCGrid.Net — Live WebAssembly Showcase</title>
+    <link rel="icon" href="data:," />
+    <!-- No <base>: all assets are referenced relatively so this works under /MVCGrid.Net/. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" />
+    <style>
+        body { padding-top: 70px; }
+        #sidebar .nav-header { margin-top: 14px; text-transform: uppercase; font-size: 11px; color: #999; letter-spacing: 1px; padding-left: 15px; }
+        #sidebar a { cursor: pointer; }
+        #sidebar li.active > a { font-weight: bold; }
+        .demo-blurb { color: #666; }
+        .code-panel { margin-top: 18px; }
+        .code-panel pre { max-height: 360px; overflow: auto; background: #f7f7f9; }
+        .customStyleTable { width: 100%; border-collapse: collapse; }
+        .customStyleTable th, .customStyleTable td { border: 1px solid #ddd; padding: 6px 10px; }
+        .customStyleTable thead th { background: #337ab7; color: #fff; cursor: pointer; }
+        .toolbar { margin-bottom: 12px; }
+        .toolbar .form-control { display: inline-block; width: auto; }
+        .boot-note { color: #999; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#/">MVCGrid.Net</a>
+            </div>
+            <p class="navbar-text navbar-right" style="margin-right: 15px;">
+                running in your browser via WebAssembly — no server
+            </p>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-lg-2" id="sidebar">
+                <ul class="nav nav-pills nav-stacked" id="nav">
+                    <li><a><span class="boot-note">Loading…</span></a></li>
+                </ul>
+            </div>
+            <div class="col-md-9 col-lg-10">
+                <div id="content">
+                    <p class="boot-note">Loading the .NET WebAssembly runtime (one-time, then cached)…</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
