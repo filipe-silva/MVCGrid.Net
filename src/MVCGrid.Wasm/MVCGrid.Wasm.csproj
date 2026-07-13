@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ProjectGuid>{B7A5CAFE-1111-2222-3333-444455556688}</ProjectGuid>
+    <!-- Portable browser/WASM host adapter: no framework-specific dependency, so it
+         targets netstandard2.0 like the core and is consumable by a net8/net10 WASM app. -->
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MVCGrid.Wasm</AssemblyName>
+    <RootNamespace>MVCGrid.Wasm</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <!-- Not published to NuGet yet; it exists to power the WASM demo. -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MVCGrid.Core\MVCGrid.Core.csproj" />
+  </ItemGroup>
+
+</Project>

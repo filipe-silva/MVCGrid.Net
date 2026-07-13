@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <OutputType>Exe</OutputType>
+    <WasmMainJSPath>main.js</WasmMainJSPath>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>MVCGrid.WasmExample</RootNamespace>
+    <AssemblyName>MVCGrid.WasmExample</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <!-- The [JSExport] methods only ever run in the browser; silence the cross-platform warning. -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+
+    <!-- REQUIRED: MVCGrid instantiates its rendering engines by string type name
+         (Type.GetType + Activator, see GridDefaults.cs), which IL trimming would
+         strip. Keep trimming off so the Bootstrap/CSV engines survive in the browser. -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <!-- Keep the ICU data out (smaller download); dates render with invariant culture. -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MVCGrid.Wasm\MVCGrid.Wasm.csproj" />
+  </ItemGroup>
+
+  <!-- Reuse the ASP.NET Core sample's grid + in-memory data verbatim (zero server deps),
+       so the two hosts demonstrate the exact same grid from a single source. -->
+  <ItemGroup>
+    <Compile Include="..\MVCGrid.AspNetCoreExample\Data\Person.cs" Link="Data\Person.cs" />
+    <Compile Include="..\MVCGrid.AspNetCoreExample\Data\PeopleRepository.cs" Link="Data\PeopleRepository.cs" />
+    <Compile Include="..\MVCGrid.AspNetCoreExample\Grids\GridConfig.cs" Link="Grids\GridConfig.cs" />
+  </ItemGroup>
+
+</Project>
