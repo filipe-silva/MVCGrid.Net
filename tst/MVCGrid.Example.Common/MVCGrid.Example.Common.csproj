@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Shared demo domain + portable grid catalog for all three example hosts.
+         netstandard2.0 so the net48, net8 and net10-wasm examples can all reference it. -->
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MVCGrid.Example.Common</AssemblyName>
+    <RootNamespace>MVCGrid.Example.Common</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MVCGrid.Core\MVCGrid.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -27,8 +27,15 @@ app that serves the demo grid as static files. It reuses the ASP.NET Core sample
 the unchanged `MVCGrid.js`, intercepting the script's single AJAX call with a jQuery `ajaxTransport` that
 calls into WASM (`[JSExport]`). Verified end-to-end in headless Chrome (render/sort/page/filter/export/detail,
 no network calls to the handler), at both the site root and a `/demo/` sub-path. `PublishTrimmed=false` is
-required (engines are activated by string type name). Deployed to GitHub Pages beside the docs at `/demo`
-via `.github/workflows/pages.yml`. Not published as a NuGet package (yet).
+required (engines are activated by string type name). Not published as a NuGet package (yet).
+
+**Examples consolidated (later work):** all three example hosts were renamed to a consistent
+`*.Example` scheme and now share `tst/MVCGrid.Example.Common` (netstandard2.0) — one `Person`
+model, in-memory repositories, custom engines, `SampleGrids.RegisterAll()` (the portable grid
+catalog) and `DemoCatalog`. `MVCGrid.Example.Wasm` was built out into a full single-page
+**showcase** (sidebar nav + hash router + docs pages + per-demo code snippets) that runs the
+whole grid catalog client-side. The hand-maintained Jekyll `docs/` site was **retired**: the WASM
+app is now the entire GitHub Pages site (`.github/workflows/pages.yml` publishes it at the root).
 
 ## Decisions
 
