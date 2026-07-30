@@ -10,6 +10,9 @@ namespace MVCGrid.Web.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
+    // Ninject 3.3 moved the HTTP modules (OnePerRequestHttpModule, NinjectHttpModule,
+    // HttpApplicationInitializationHttpModule) into the WebHost package/namespace.
+    using Ninject.Web.Common.WebHost;
     using MVCGrid.Example.Common;
 
     public static class NinjectWebCommon 

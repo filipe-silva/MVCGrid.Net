@@ -1,22 +1,7 @@
-﻿
-@section head{
-
-}
+@using MVCGrid.Example.Common
 @{
     ViewBag.Title = "Download";
 }
 
-<h2>NuGet</h2>
-
-<p>Available from NuGet: <a href="https://www.nuget.org/packages/MVCGrid.Net">https://www.nuget.org/packages/MVCGrid.Net</a></p>
-
-<div class="nuget-badge">
-    <p>
-        <code>
-            PM&gt; Install-Package MVCGrid.Net
-        </code>
-    </p>
-</div>
-
-<h2>Source</h2>
-<p>Source on GitHub: <a href="https://github.com/bigjoe714/MVCGrid.Net">https://github.com/bigjoe714/MVCGrid.Net</a></p>
+@* Page body is defined once in the shared example library (StaticPages) and rendered by all hosts. *@
+@Html.Raw(StaticPages.DownloadHtml())

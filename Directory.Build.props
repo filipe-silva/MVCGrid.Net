@@ -1,8 +1,8 @@
 <Project>
 
-  <!-- Shared NuGet package metadata for the three shippable libraries
-       (MVCGrid, MVCGrid.MvcWeb, MVCGrid.AspNetCore). Per-package PackageId,
-       Title, Description and the README pack-include live in each .csproj.
+  <!-- Shared NuGet package metadata for the four shippable libraries
+       (MVCGrid, MVCGrid.MvcWeb, MVCGrid.AspNetCore, MVCGrid.Wasm). Per-package
+       PackageId, Title, Description and the README pack-include live in each .csproj.
        Sample apps under tst/ opt out with <IsPackable>false</IsPackable>. -->
   <PropertyGroup>
     <Version>3.0.0</Version>
@@ -15,7 +15,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>mvc grid ajax bootstrap paging sorting filtering csv aspnetcore</PackageTags>
-    <PackageReleaseNotes>3.0.0 — Library split into a portable netstandard2.0 core (MVCGrid) plus thin host adapters: MVCGrid.MvcWeb (classic ASP.NET MVC 3/4/5) and MVCGrid.AspNetCore (ASP.NET Core, RenderingEngine mode).</PackageReleaseNotes>
+    <PackageReleaseNotes>3.0.0 — Library split into a portable netstandard2.0 core (MVCGrid) plus thin host adapters: MVCGrid.MvcWeb (classic ASP.NET MVC 3/4/5), MVCGrid.AspNetCore (ASP.NET Core, RenderingEngine mode) and MVCGrid.Wasm (browser/WebAssembly, no server).</PackageReleaseNotes>
     <!-- Ship a symbol package (.snupkg) and embed source-link-friendly metadata. -->
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>

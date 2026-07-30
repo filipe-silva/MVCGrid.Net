@@ -6,8 +6,9 @@
     <title>@ViewBag.Title - MVCGrid.Net</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link href="~/Content/sh/shCore.css" rel="stylesheet" />
-    <link href="~/Content/sh/shThemeDefault.css" rel="stylesheet" />
+    @* SyntaxHighlighter is restored by LibMan (libman.json) into lib/syntaxhighlighter at build time. *@
+    <link href="~/lib/syntaxhighlighter/styles/shCore.css" rel="stylesheet" />
+    <link href="~/lib/syntaxhighlighter/styles/shThemeDefault.css" rel="stylesheet" />
 
     <style type="text/css">
         .nuget-badge code {
@@ -24,6 +25,10 @@
             overflow: auto;
             padding: 15px;
         }
+
+        /* column-visibility dropdown (used by the shared toolbar) */
+        .dropdown-menu input {margin-top: -4px;}
+        .dropdown-menu label {margin: 0;}
     </style>
 
 
@@ -65,11 +70,17 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/MVCGridHandler.axd/script.js"></script>
     @*<script src="~/Scripts/script-debug.js"></script>*@
-    <script src="~/Content/sh/shCore.js"></script>
-    <script src="~/Content/sh/shBrushJScript.js"></script>
-    <script src="~/Content/sh/shBrushCSharp.js"></script>
+    <script src="~/lib/syntaxhighlighter/scripts/shCore.js"></script>
+    <script src="~/lib/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+    <script src="~/lib/syntaxhighlighter/scripts/shBrushCSharp.js"></script>
     <script type="text/javascript">
         SyntaxHighlighter.all();
+        // Keep the column-visibility dropdown open while checking fields.
+        $(function () {
+            $(document.body).on('click', '.dropdown-menu li', function (event) {
+                event.stopPropagation();
+            });
+        });
     </script>
     @RenderSection("scripts", required: false)
 </body>

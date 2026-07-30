@@ -8,9 +8,17 @@
     <AssemblyName>MVCGrid.Wasm</AssemblyName>
     <RootNamespace>MVCGrid.Wasm</RootNamespace>
     <LangVersion>latest</LangVersion>
-    <!-- Not published to NuGet yet; it exists to power the WASM demo. -->
-    <IsPackable>false</IsPackable>
+
+    <!-- NuGet: browser/WebAssembly host adapter. Depends on MVCGrid (core) via
+         ProjectReference (emitted by pack); no other dependencies. -->
+    <PackageId>MVCGrid.Wasm</PackageId>
+    <Title>MVCGrid.Net for the browser (WebAssembly)</Title>
+    <Description>Browser/WebAssembly host adapter for MVCGrid.Net. Runs the portable MVCGrid core entirely client-side (no server): WasmGridRenderer produces the grid HTML, answers the client script's AJAX requests and exports in-process, and serves the unchanged MVCGrid.js. Powers the MVCGrid.Net live demo site.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MVCGrid.Core\MVCGrid.Core.csproj" />

@@ -27,11 +27,10 @@
     <ProjectReference Include="..\MVCGrid.Example.Common\MVCGrid.Example.Common.csproj" />
   </ItemGroup>
 
-  <!-- Embed the shared grid source so the showcase can display each grid's config code. -->
   <ItemGroup>
-    <EmbeddedResource Include="..\MVCGrid.Example.Common\SampleGrids.cs">
-      <LogicalName>SampleGrids.cs.txt</LogicalName>
-    </EmbeddedResource>
+    <!-- Restores the client-side libraries in libman.json (SyntaxHighlighter -> wwwroot/sh) at build time. -->
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" />
   </ItemGroup>
+
 
 </Project>

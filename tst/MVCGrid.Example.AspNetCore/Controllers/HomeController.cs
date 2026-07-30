@@ -8,11 +8,5 @@ namespace MVCGrid.Example.AspNetCore.Controllers
         {
             return View();
         }
-
-        public IActionResult Detail(int id)
-        {
-            ViewBag.Id = id;
-            return View();
-        }
     }
 }

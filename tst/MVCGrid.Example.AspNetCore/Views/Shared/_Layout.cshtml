@@ -2,18 +2,116 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewBag.Title - MVCGrid.AspNetCore Sample</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - MVCGrid.Net</title>
+    @* Same look as the classic MVC example (_Layout.cshtml + Site.css): Bootstrap 3 + SyntaxHighlighter.
+       All client-side libraries are restored by LibMan (libman.json) into wwwroot/lib at build time. *@
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/syntaxhighlighter/styles/shCore.css" rel="stylesheet" />
+    <link href="~/lib/syntaxhighlighter/styles/shThemeDefault.css" rel="stylesheet" />
+
+    <style type="text/css">
+        /* Site.css (classic MVC example) */
+        body {
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+
+        .body-content {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .dl-horizontal dt {
+            white-space: normal;
+        }
+
+        input,
+        select,
+        textarea {
+            max-width: 280px;
+        }
+
+        .nuget-badge code {
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            background-color: #202020;
+            border: 4px solid silver;
+            border-radius: 5px;
+            box-shadow: 2px 2px 3px #6e6e6e;
+            color: #e2e2e2;
+            display: block;
+            font: 1.5em 'andale mono','lucida console',monospace;
+            line-height: 1.5em;
+            overflow: auto;
+            padding: 15px;
+        }
+
+        /* column-visibility dropdown (Home/Index head section in the classic example) */
+        .dropdown-menu input { margin-top: -4px; }
+        .dropdown-menu label { margin: 0; }
+
+        /* CustomStyle demo (custom rendering engine markup) */
+        .customStyleTable { width: 100%; border-collapse: collapse; }
+        .customStyleTable th, .customStyleTable td { border: 1px solid #ddd; padding: 6px 10px; }
+        .customStyleTable thead th { background: #337ab7; color: #fff; cursor: pointer; }
+    </style>
+
+    @RenderSection("head", required: false)
 </head>
 <body>
-    <div class="container" style="padding-top: 20px;">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">MVCGrid.Net</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/gettingstarted">Getting Started</a></li>
+                    <li><a href="/demo">Demos</a></li>
+                    <li><a href="/documentation">Documentation</a></li>
+                    <li><a href="/download">Download</a></li>
+                    <li><a href="/support">Support</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
         @RenderBody()
+        <hr />
+        <footer>
+            <p class="text-muted">MVCGrid running on ASP.NET Core via <code>MVCGrid.AspNetCore</code>, using the shared grid catalog in <code>MVCGrid.Example.Common</code>.</p>
+        </footer>
     </div>
 
     <!-- jQuery first, then the MVCGrid client script (served by app.MapMVCGrid()). -->
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="/mvcgrid/script.js"></script>
+    <script src="~/lib/syntaxhighlighter/scripts/shCore.js"></script>
+    <script src="~/lib/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+    <script src="~/lib/syntaxhighlighter/scripts/shBrushCSharp.js"></script>
+    <script type="text/javascript">
+        // Client loading hooks referenced by the CustomLoading demo grid (the shared demo
+        // page defines no page-local hooks, unlike the classic host's hand-written view).
+        window.showLoading = window.showLoading || function () { };
+        window.hideLoading = window.hideLoading || function () { };
+
+        SyntaxHighlighter.all();
+        // Keep the column-visibility dropdown open while checking fields
+        // (same trick as the classic example's home page).
+        $(function () {
+            $(document.body).on('click', '.dropdown-menu li', function (event) {
+                event.stopPropagation();
+            });
+        });
+    </script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

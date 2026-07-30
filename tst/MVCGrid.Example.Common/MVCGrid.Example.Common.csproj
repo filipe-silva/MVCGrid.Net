@@ -14,4 +14,15 @@
     <ProjectReference Include="..\..\src\MVCGrid.Core\MVCGrid.Core.csproj" />
   </ItemGroup>
 
+  <!-- Embed the grid catalog source so CodeSnippets can show each grid's config code,
+       the API-reference data that feeds the Documentation page's doc grids, and the
+       shared site page bodies (StaticPages loads Pages/*.html on first use). -->
+  <ItemGroup>
+    <EmbeddedResource Include="SampleGrids.cs">
+      <LogicalName>SampleGrids.cs.txt</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="documentation.csv" />
+    <EmbeddedResource Include="Pages\*.html" />
+  </ItemGroup>
+
 </Project>

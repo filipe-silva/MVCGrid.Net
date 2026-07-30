@@ -1,31 +1,28 @@
-﻿using System.Web;
+using System.Web;
 using System.Web.Optimization;
 
 namespace MVCGridExample
 {
     public class BundleConfig
     {
-        // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
+        // Client-side libraries are restored by LibMan (libman.json) into lib/ at build time.
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/lib/jquery/jquery.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
-
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+                        "~/lib/modernizr/modernizr.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/lib/bootstrap/js/bootstrap.js",
+                      "~/lib/respond/respond.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+            // CssRewriteUrlTransform keeps the ../fonts/glyphicons references working
+            // when the bundle is served from its virtual path in optimized mode.
+            bundles.Add(new StyleBundle("~/Content/css")
+                      .Include("~/lib/bootstrap/css/bootstrap.css", new CssRewriteUrlTransform())
+                      .Include("~/Content/site.css"));
         }
     }
 }

@@ -1,0 +1,7 @@
+@{
+    ViewBag.Title = "Documentation";
+}
+
+@* Page body is defined once in the shared example library (StaticPages) and rendered by all
+   hosts; the doc grids come from the shared SampleGrids/DocumentationRepository. *@
+@Html.Raw(StaticPages.DocumentationHtml(name => Html.MVCGrid(name).ToString()))

@@ -1,0 +1,7 @@
+@{
+    ViewBag.Title = "Detail";
+    string id = Convert.ToString(ViewBag.Id);
+}
+
+@* Page body is defined once in the shared example library (StaticPages) and rendered by all hosts. *@
+@Html.Raw(StaticPages.DetailHtml(id))

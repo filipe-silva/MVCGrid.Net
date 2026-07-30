@@ -1,0 +1,65 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.6.1",
+      "destination": "lib/jquery",
+      "files": [
+        "jquery.js",
+        "jquery.min.js",
+        "jquery.min.map"
+      ]
+    },
+    {
+      "library": "twitter-bootstrap@3.4.1",
+      "destination": "lib/bootstrap",
+      "files": [
+        "css/bootstrap.css",
+        "css/bootstrap.min.css",
+        "js/bootstrap.js",
+        "js/bootstrap.min.js",
+        "fonts/glyphicons-halflings-regular.eot",
+        "fonts/glyphicons-halflings-regular.svg",
+        "fonts/glyphicons-halflings-regular.ttf",
+        "fonts/glyphicons-halflings-regular.woff",
+        "fonts/glyphicons-halflings-regular.woff2"
+      ]
+    },
+    {
+      "library": "modernizr@2.6.2",
+      "destination": "lib/modernizr",
+      "files": [
+        "modernizr.js",
+        "modernizr.min.js"
+      ]
+    },
+    {
+      "library": "respond.js@1.4.2",
+      "destination": "lib/respond",
+      "files": [
+        "respond.js",
+        "respond.min.js"
+      ]
+    },
+    {
+      "library": "jquery.blockUI@2.70.0-2014.11.23",
+      "destination": "lib/jquery-blockui",
+      "files": [
+        "jquery.blockUI.js",
+        "jquery.blockUI.min.js"
+      ]
+    },
+    {
+      "library": "SyntaxHighlighter@3.0.83",
+      "destination": "lib/syntaxhighlighter",
+      "files": [
+        "scripts/shCore.js",
+        "scripts/shBrushJScript.js",
+        "scripts/shBrushCSharp.js",
+        "styles/shCore.css",
+        "styles/shThemeDefault.css"
+      ]
+    }
+  ]
+}

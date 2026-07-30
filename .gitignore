@@ -541,3 +541,8 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,aspnetcore
 
+
+# LibMan-restored client-side libraries (see libman.json in each example project)
+tst/MVCGrid.Example.MvcWeb/lib/
+tst/MVCGrid.Example.AspNetCore/wwwroot/lib/
+tst/MVCGrid.Example.Wasm/wwwroot/lib/

@@ -1,9 +1,6 @@
 using MVCGrid.Example.Common;
 using MVCGrid.Models;
 using MVCGrid.Web;
-using MVCGrid.Web.Models;
-using System;
-using System.Web;
 
 namespace MVCGridExample
 {
@@ -71,52 +68,8 @@ namespace MVCGridExample
                 })
             );
 
-            //MVCGridDefinitionTable.Add DO NOT DELETE - Needed for demo code parsing
-
-            // ---- Host-only API-reference grids (render the DocumentationRepository tables) ----
-
-            var docsReturnTypeColumn = new GridColumn<MethodDocItem>
-            {
-                ColumnName = "ReturnType",
-                HeaderText = "Return Type",
-                HtmlEncode = false,
-                ValueExpression = (p, c) => String.Format("<code>{0}</code>", HttpUtility.HtmlEncode(p.Return))
-            };
-            var docsNameColumn = new GridColumn<MethodDocItem>
-            {
-                ColumnName = "Name",
-                HtmlEncode = false,
-                ValueExpression = (p, c) => String.Format("<code>{0}</code>", HttpUtility.HtmlEncode(p.Name))
-            };
-            var docsDescriptionColumn = new GridColumn<MethodDocItem>
-            {
-                ColumnName = "Description",
-                ValueExpression = (p, c) => p.Description
-            };
-
-            Func<GridContext, QueryResult<MethodDocItem>> docsLoadData = context =>
-            {
-                var result = new QueryResult<MethodDocItem>();
-                var docRepo = new DocumentationRepository();
-                result.Items = docRepo.GetData(context.GridName);
-                return result;
-            };
-
-            MVCGridDefinitionTable.Add("GridDefinition", new MVCGridBuilder<MethodDocItem>()
-                .AddColumn(docsNameColumn).AddColumn(docsReturnTypeColumn).AddColumn(docsDescriptionColumn)
-                .WithRetrieveDataMethod(docsLoadData));
-
-            MVCGridDefinitionTable.Add("GridColumn", new MVCGridBuilder<MethodDocItem>()
-                .AddColumn(docsNameColumn).AddColumn(docsReturnTypeColumn).AddColumn(docsDescriptionColumn)
-                .WithRetrieveDataMethod(docsLoadData));
-
-            MVCGridDefinitionTable.Add("QueryOptions", new MVCGridBuilder<MethodDocItem>()
-                .AddColumn(docsNameColumn).AddColumn(docsReturnTypeColumn).AddColumn(docsDescriptionColumn)
-                .WithRetrieveDataMethod(docsLoadData));
-
-            MVCGridDefinitionTable.Add("ClientSide", new MVCGridBuilder<MethodDocItem>()
-                .AddColumn(docsNameColumn).AddColumn(docsDescriptionColumn)
-                .WithRetrieveDataMethod(docsLoadData));
+            // The API-reference grids on the Documentation page (GridDefinition/GridColumn/
+            // QueryOptions/ClientSide) are portable and registered by SampleGrids.RegisterAll().
         }
     }
 }

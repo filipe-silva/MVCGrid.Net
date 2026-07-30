@@ -1,0 +1,8 @@
+@model MVCGrid.Example.Common.DemoInfo
+@{
+    ViewBag.Title = Model.Title;
+}
+
+@* Page body is defined once in the shared example library (StaticPages) and rendered by the
+   Core and WASM hosts (the classic host keeps its richer hand-written demo views). *@
+@Html.Raw(StaticPages.DemoHtml(Model, "/demo/", name => Html.MVCGrid(name).ToString()))

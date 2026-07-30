@@ -1,0 +1,33 @@
+<p>&nbsp;</p>
+
+<div class="row">
+    <div class="col-md-3" role="complementary">
+        <ul>
+{{SIDEBAR}}
+        </ul>
+    </div>
+    <div class="col-md-9" role="main">
+        <h2>{{TITLE}}</h2>
+        <p>{{BLURB}}</p>
+
+        {{TOOLBAR}}
+
+        <div id="grid-host">{{GRID}}</div>
+
+        <h3>Code</h3>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Inside <strong>MVCGridConfig.cs</strong></div>
+            <div class="panel-body">
+                <pre class="brush: csharp">{{CONFIG_SNIPPET}}</pre>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">View</div>
+            <div class="panel-body">
+                <pre>@Html.MVCGrid(&quot;{{GRID_NAME}}&quot;)</pre>
+            </div>
+        </div>
+    </div>
+</div>

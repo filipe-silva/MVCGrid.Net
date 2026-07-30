@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36930.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution-files", ".solution-files", "{7DDC710C-80CF-4CE3-A978-50CC8F6C1C39}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -27,6 +31,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCGrid.Example.Wasm", "tst\MVCGrid.Example.Wasm\MVCGrid.Example.Wasm.csproj", "{5734A211-3C5E-4EA3-A4C2-A79C1DC3AF57}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCGrid.Example.Common", "tst\MVCGrid.Example.Common\MVCGrid.Example.Common.csproj", "{3CCA40B9-1118-44F9-857A-533DE5051267}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{04A45E30-6F57-4234-AB7C-126AEB1AEB14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{9C671B97-1EE0-47A3-81D3-9F769192044E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\pages.yml = .github\workflows\pages.yml
+		.github\workflows\publish.yml = .github\workflows\publish.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,5 +159,9 @@ Global
 		{B7A5CAFE-1111-2222-3333-444455556688} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{5734A211-3C5E-4EA3-A4C2-A79C1DC3AF57} = {0128624C-79B4-412B-99DF-8FD3CCE01B6A}
 		{3CCA40B9-1118-44F9-857A-533DE5051267} = {0128624C-79B4-412B-99DF-8FD3CCE01B6A}
+		{9C671B97-1EE0-47A3-81D3-9F769192044E} = {04A45E30-6F57-4234-AB7C-126AEB1AEB14}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9151EF6F-64ED-4C87-A44A-1B9435102788}
 	EndGlobalSection
 EndGlobal

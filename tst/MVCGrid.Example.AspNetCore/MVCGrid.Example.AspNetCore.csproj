@@ -14,4 +14,9 @@
     <ProjectReference Include="..\MVCGrid.Example.Common\MVCGrid.Example.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Restores the client-side libraries in libman.json (SyntaxHighlighter -> wwwroot/sh) at build time. -->
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" />
+  </ItemGroup>
+
 </Project>

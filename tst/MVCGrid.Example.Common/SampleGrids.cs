@@ -489,6 +489,47 @@ namespace MVCGrid.Example.Common
                 .WithDefaultSortColumn("Test")
                 .WithRetrieveDataMethod(context => new QueryResult<YourModelItem>())
             );
+
+            // ---- API-reference grids for the Documentation page (data from the embedded
+            //      documentation.csv via DocumentationRepository; shown by all hosts) ----
+
+            var docsReturnTypeColumn = new GridColumn<MethodDocItem>
+            {
+                ColumnName = "ReturnType",
+                HeaderText = "Return Type",
+                HtmlEncode = false,
+                ValueExpression = (p, c) => string.Format("<code>{0}</code>", System.Net.WebUtility.HtmlEncode(p.Return))
+            };
+            var docsNameColumn = new GridColumn<MethodDocItem>
+            {
+                ColumnName = "Name",
+                HtmlEncode = false,
+                ValueExpression = (p, c) => string.Format("<code>{0}</code>", System.Net.WebUtility.HtmlEncode(p.Name))
+            };
+            var docsDescriptionColumn = new GridColumn<MethodDocItem>
+            {
+                ColumnName = "Description",
+                ValueExpression = (p, c) => p.Description
+            };
+
+            Func<GridContext, QueryResult<MethodDocItem>> docsLoadData = context =>
+                new QueryResult<MethodDocItem> { Items = DocumentationRepository.GetData(context.GridName) };
+
+            MVCGridDefinitionTable.Add("GridDefinition", new MVCGridBuilder<MethodDocItem>()
+                .AddColumn(docsNameColumn).AddColumn(docsReturnTypeColumn).AddColumn(docsDescriptionColumn)
+                .WithRetrieveDataMethod(docsLoadData));
+
+            MVCGridDefinitionTable.Add("GridColumn", new MVCGridBuilder<MethodDocItem>()
+                .AddColumn(docsNameColumn).AddColumn(docsReturnTypeColumn).AddColumn(docsDescriptionColumn)
+                .WithRetrieveDataMethod(docsLoadData));
+
+            MVCGridDefinitionTable.Add("QueryOptions", new MVCGridBuilder<MethodDocItem>()
+                .AddColumn(docsNameColumn).AddColumn(docsReturnTypeColumn).AddColumn(docsDescriptionColumn)
+                .WithRetrieveDataMethod(docsLoadData));
+
+            MVCGridDefinitionTable.Add("ClientSide", new MVCGridBuilder<MethodDocItem>()
+                .AddColumn(docsNameColumn).AddColumn(docsDescriptionColumn)
+                .WithRetrieveDataMethod(docsLoadData));
         }
 
         // ---- shared column sets / retrieve helpers ----

@@ -427,7 +427,7 @@ var MVCGrid = new function () {
             data: { 'Name': mvcGridName },
             cache: false,
             beforeSend: function () {
-                if (gridDef.clientLoading != '') {
+                if (gridDef.clientLoading != '' && typeof window[gridDef.clientLoading] === 'function') {
                     window[gridDef.clientLoading]();
                 }
                 
@@ -446,7 +446,7 @@ var MVCGrid = new function () {
                 }
             },
             complete: function() {
-                if (gridDef.clientLoadingComplete != '') {
+                if (gridDef.clientLoadingComplete != '' && typeof window[gridDef.clientLoadingComplete] === 'function') {
                     window[gridDef.clientLoadingComplete]();
                 }
 

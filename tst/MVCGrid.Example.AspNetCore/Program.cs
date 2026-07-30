@@ -15,6 +15,7 @@ var app = builder.Build();
 // The shared portable grid catalog registers into the static table (same as the classic host).
 SampleGrids.RegisterAll();
 
+app.UseStaticFiles(); // wwwroot/sh (SyntaxHighlighter)
 app.MapMVCGrid();
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 

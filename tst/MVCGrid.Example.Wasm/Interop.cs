@@ -76,6 +76,76 @@ namespace MVCGrid.Example.Wasm
             return CodeSnippets.For(gridName);
         }
 
+        /// <summary>The shared Getting Started page body (same HTML the Razor hosts render).</summary>
+        [JSExport]
+        internal static string GetGettingStartedHtml(string demosHref)
+        {
+            return StaticPages.GettingStartedHtml(demosHref);
+        }
+
+        /// <summary>The shared Download page body (same HTML the Razor hosts render).</summary>
+        [JSExport]
+        internal static string GetDownloadHtml()
+        {
+            return StaticPages.DownloadHtml();
+        }
+
+        /// <summary>The shared Home page body, with the example grid rendered in-process.</summary>
+        [JSExport]
+        internal static string GetHomeHtml(string hostNoteHtml, string url)
+        {
+            EnsureInitialized();
+            return StaticPages.HomeHtml(hostNoteHtml, name => Renderer.GetBasePageHtml(name, url));
+        }
+
+        /// <summary>The shared catalog demo page body, with the grid rendered in-process.</summary>
+        [JSExport]
+        internal static string GetDemoHtml(string key, string url)
+        {
+            EnsureInitialized();
+            DemoInfo demo = null;
+            foreach (var d in DemoCatalog.All)
+            {
+                if (d.Key == key) { demo = d; break; }
+            }
+            if (demo == null)
+            {
+                return "";
+            }
+            return StaticPages.DemoHtml(demo, "#/demo/", name => Renderer.GetBasePageHtml(name, url));
+        }
+
+        /// <summary>The shared Detail page body (same HTML the Razor hosts render).</summary>
+        [JSExport]
+        internal static string GetDetailHtml(string id)
+        {
+            return StaticPages.DetailHtml(id);
+        }
+
+        /// <summary>The shared Support page body (same HTML the Razor hosts render).</summary>
+        [JSExport]
+        internal static string GetSupportHtml()
+        {
+            return StaticPages.SupportHtml();
+        }
+
+        /// <summary>The shared Documentation page body, with the doc grids rendered in-process.</summary>
+        [JSExport]
+        internal static string GetDocumentationHtml(string url)
+        {
+            EnsureInitialized();
+            return StaticPages.DocumentationHtml(name => Renderer.GetBasePageHtml(name, url));
+        }
+
+        /// <summary>The shared demo toolbar markup (same HTML the classic MVC partial renders).</summary>
+        [JSExport]
+        internal static string GetToolbarHtml(string gridName, bool pageSize, bool columnVisibility,
+            bool export, bool globalSearch, string searchOption)
+        {
+            return DemoToolbar.BuildHtml(gridName, pageSize, columnVisibility, export, globalSearch,
+                string.IsNullOrEmpty(searchOption) ? "search" : searchOption);
+        }
+
         private static string Json(string s)
         {
             if (s == null)

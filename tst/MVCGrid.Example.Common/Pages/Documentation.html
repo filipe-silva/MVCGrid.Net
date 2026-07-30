@@ -1,0 +1,99 @@
+<h1>Documentation</h1>
+
+<h2>Grid Configuration</h2>
+<p>Configure the settings for each grid you want to create at application startup, using <code>MVCGridDefinitionTable.Add</code>.</p>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Basic Usage</div>
+    <div class="panel-body">
+        <pre class="brush: csharp">MVCGridDefinitionTable.Add(&quot;UsageExample&quot;, new MVCGridBuilder&lt;YourModelItem&gt;()
+    .WithAuthorizationType(AuthorizationType.AllowAnonymous)
+    .AddColumns(cols =&gt;
+    {
+        // Add your columns here
+        cols.Add(&quot;UniqueColumnName&quot;).WithHeaderText(&quot;Any Header&quot;)
+            .WithValueExpression(i =&gt; i.YourProperty); // use the Value Expression to return the cell text for this column
+        cols.Add().WithColumnName(&quot;UrlExample&quot;)
+            .WithHeaderText(&quot;Edit&quot;)
+            .WithValueExpression((i, c) =&gt; c.UrlHelper.Action(&quot;detail&quot;, &quot;demo&quot;, new { id = i.YourProperty }));
+    })
+    .WithRetrieveDataMethod((context) =&gt;
+    {
+        // Query your data here. Obey Ordering, paging and filtering parameters given in the context.QueryOptions.
+        // Use Entity Framework, a module from your IoC Container, or any other method.
+        // Return QueryResult object containing IEnumerable&lt;YourModelItem&gt;
+        return new QueryResult&lt;YourModelItem&gt;()
+        {
+            Items = new List&lt;YourModelItem&gt;(),
+            TotalRecords = 0 // if paging is enabled, return the total number of records of all pages
+        };
+    })
+);</pre>
+    </div>
+</div>
+
+<h2>Setting Defaults</h2>
+<p>To set defaults for multiple grids, create a <code>GridDefaults</code> object and set the desired properties. Then pass that <code>GridDefaults</code> object into the GridBuilder or GridDefinition when creating it.</p>
+
+<pre class="brush: csharp">GridDefaults gridDefaults = new GridDefaults()
+{
+    Paging = true,
+    ItemsPerPage = 20,
+    Sorting = true,
+    NoResultsMessage = &quot;Sorry, no results were found&quot;
+};
+ColumnDefaults colDefaults = new ColumnDefaults()
+{
+    EnableSorting = true
+};
+MVCGridDefinitionTable.Add(&quot;UsageExample&quot;,
+    new MVCGridBuilder&lt;YourModelItem&gt;(gridDefaults, colDefaults) // pass in defaults object to ctor
+    .AddColumns(cols =&gt;
+    {
+        // add columns
+    })
+    .WithRetrieveDataMethod((context) =&gt;
+    {
+        //get data
+        return new QueryResult&lt;YourModelItem&gt;();
+    })
+);</pre>
+
+<h2>Key concepts</h2>
+<ul>
+    <li><strong>RetrieveData owns all data access.</strong> Your callback honours <code>context.QueryOptions</code> for sorting/paging/filtering and sets <code>TotalRecords</code> when paging is enabled.</li>
+    <li><strong>Two-level features.</strong> Sorting/filtering must be enabled at the grid level <em>and</em> per column.</li>
+    <li><strong>Per-grid query-string prefixes</strong> let multiple grids share a page.</li>
+</ul>
+
+<h2>Grid Definition</h2>
+{{GRID_DEFINITION}}
+
+<h2>Column Definition</h2>
+{{GRID_COLUMN}}
+
+<h2>QueryOptions</h2>
+{{GRID_QUERYOPTIONS}}
+
+<h2>Client-Side API</h2>
+{{GRID_CLIENTSIDE}}
+
+<a name="ClientSideBindings"></a>
+<h2>Client-Side Bindings</h2>
+
+<ul>
+    <li><code>data-mvcgrid-type='filter'</code> - <code>data-mvcgrid-option='ColumnName'</code> - put these attributes on any input element whose value you want to be a filter parameter.</li>
+    <li><code>data-mvcgrid-type='additionalQueryOption'</code> - <code>data-mvcgrid-option='ColumnName'</code> - put these attributes on any input element whose value you want to be an additional query parameter.</li>
+    <li><code>data-mvcgrid-apply-filter='event'</code> - put these attributes on a button or input element that you want to trigger filtering. For example, a button click or select list change. Fill in the event name with click, change, keyup, etc to control the trigger.</li>
+    <li><code>data-mvcgrid-apply-additional='event'</code> - put these attributes on a button or input element that you want to trigger applying of additional query parameters.</li>
+    <li><code>data-mvcgrid-type='export'</code> - put this attribute on a button to trigger the export to csv.</li>
+    <li><code>data-mvcgrid-type='pageSize'</code> - put this attribute on a select list to bind to the current page side. On change will trigger updating the grid.</li>
+    <li><code>data-mvcgrid-type='columnVisibilityList'</code> - put this attribute on a <code>&lt;ul&gt;</code> element. List items will be appended with checkboxes to change column visibility.</li>
+</ul>
+
+<h2>Debugging Grid Errors</h2>
+<p>Add the following appSetting to your web.config file to see the actual error details on grid generation instead of the custom error message:
+<code>&lt;add key=&quot;MVCGridShowErrorDetail&quot; value=&quot;true&quot; /&gt;</code>
+(On ASP.NET Core, set <code>ShowErrorDetails = true</code> in <code>AddMVCGrid</code>.)</p>
+
+<p class="text-muted">Every demo in the sidebar shows its own configuration code.</p>
