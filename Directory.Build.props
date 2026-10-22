@@ -1,5 +1,20 @@
 <Project>
 
+  <!-- SHARED BLOCK - keep it exactly as it is, byte for byte. Put this repo's own settings below the separator, in this same file. -->
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <!-- Binding redirects for projects that carry an app.config or a web.config.
+       GenerateBindingRedirectsOutputType extends the generation to library and test outputs, which are skipped otherwise. -->
+  <PropertyGroup Condition="Exists('$(MSBuildProjectDirectory)/app.config') Or Exists('$(MSBuildProjectDirectory)/web.config')">
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+  </PropertyGroup>
+
+  <!-- ================================ end of shared block ================================ -->
+
   <!-- Shared NuGet package metadata for the four shippable libraries
        (MVCGrid, MVCGrid.MvcWeb, MVCGrid.AspNetCore, MVCGrid.Wasm). Per-package
        PackageId, Title, Description and the README pack-include live in each .csproj.
